@@ -23,7 +23,7 @@ public class GameRenderer {
 		this.cam = new Camera2D(g, FRUSTUM_WIDTH, FRUSTUM_HEIGHT);
 	}
 	
-	 public void render() {
+	public void render() {
         cam.setViewportAndMatrices();
         renderBackground();
         renderForeground();
@@ -52,7 +52,8 @@ public class GameRenderer {
 	private void renderLetters() {
 		for(int i = 0; i < board.letters.size(); i++) {
             Letter l = board.letters.get(i);       
-            batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.letter);            
+            batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.letter);
+            Assets.font.drawText(batcher, l.toString(), l.position.x, l.position.y, 30, 30);
         }
 	}
 	

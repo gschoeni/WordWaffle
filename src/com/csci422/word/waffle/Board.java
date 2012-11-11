@@ -15,10 +15,8 @@ public class Board {
 	
 	public static final float WORLD_WIDTH = 320;
 	public static final float WORLD_HEIGHT = 480;
-	
 	public static final float BOARD_WIDTH = 7;
 	public static final float BOARD_HEIGHT = 7;
-	
 	
 	public final List<Letter> letters;
 	public final List<Rectangle> validBoardSpaces;

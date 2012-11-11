@@ -11,6 +11,7 @@ public class Assets {
     public static Texture foregroundItems;
     public static TextureRegion letter;
     public static TextureRegion debugRect;
+    public static TextRenderer font;
     
     public static void load(GLGame game) {
     	background = new Texture(game, "waffle.png");
@@ -19,6 +20,7 @@ public class Assets {
         foregroundItems = new Texture(game, "game_sprites.png");   
         letter = new TextureRegion(foregroundItems, 0, 0, 40, 40);
         debugRect = new TextureRegion(foregroundItems, 40, 0, 40, 40);
+        font = new TextRenderer(foregroundItems, 0, 40, 40, 40);
     }
     
     public static void reload() {

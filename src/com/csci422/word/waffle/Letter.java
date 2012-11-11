@@ -16,5 +16,9 @@ public class Letter extends GameObject {
 		position.set(x, y);
     	bounds.setLowerLeft(x, y);
 	}
+	
+	public String toString() {
+		return ""+value;
+	}
 
 }

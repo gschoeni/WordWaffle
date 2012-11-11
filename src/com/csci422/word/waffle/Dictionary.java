@@ -17,4 +17,5 @@ public class Dictionary {
     public static char getRandomLetter() {
     	return alphabet[Math.abs(generator.nextInt()%26)];
     }
+    
 }
