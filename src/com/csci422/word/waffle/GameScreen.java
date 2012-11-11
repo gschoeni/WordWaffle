@@ -31,7 +31,6 @@ public class GameScreen extends GLScreen {
 		board = new Board();
 		renderer = new GameRenderer(glGraphics, batcher, board);
 		touchPoint = new Vector2();
-		Log.d(WordWaffle.DEBUG_TAG, "Init game screen");
 	}
 
 	@Override
@@ -40,20 +39,7 @@ public class GameScreen extends GLScreen {
 		for(int i = 0; i < touchEvents.size(); i++) {
 	        TouchEvent event = touchEvents.get(i);
 	        touchPoint = touchPoint.getGLCoords(glGraphics, touchPoint, event.x, event.y, GameRenderer.FRUSTUM_WIDTH, GameRenderer.FRUSTUM_HEIGHT);
-	        Letter l = board.letters.get(0);
-	        
-	        Log.d(WordWaffle.DEBUG_TAG, "Letter x: "+l.bounds.lowerLeft.x+" y: "+l.bounds.lowerLeft.y);
-	        
-	        if (event.type == TouchEvent.TOUCH_DOWN && OverlapTester.pointInRectangle(l.bounds, touchPoint)) {
-	        	Log.d(WordWaffle.DEBUG_TAG, "letter touched");
-	        	isDraggingLetter = true;
-	        }
-	        if (event.type == TouchEvent.TOUCH_DRAGGED && isDraggingLetter) {
-	        	l.position.set(touchPoint.x, touchPoint.y);
-	        	l.bounds.setLowerLeft(touchPoint.x, touchPoint.y);
-	        } else if (event.type == TouchEvent.TOUCH_UP) {
-	        	isDraggingLetter = false;
-	        }
+	        board.checkDraggingLetter(event, touchPoint);
 	    }
 		
 	}
