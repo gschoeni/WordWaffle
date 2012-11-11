@@ -133,4 +133,8 @@ public class Vector2 {
         return touchPoint;
     }
     
+    public String toString() {
+    	return "x: " + x + " y: " + y;
+    }
+    
 }

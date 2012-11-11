@@ -14,4 +14,8 @@ public class Rectangle {
     	this.lowerLeft.x = x - width/2;
     	this.lowerLeft.y = y - height/2;
     }
+    
+    public String toString() {
+    	return "Lower Left x:" + lowerLeft.x + " y: " + lowerLeft.y + " Width: " + width + " Height: " + height;
+    }
 }

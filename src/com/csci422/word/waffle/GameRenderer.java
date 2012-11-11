@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import com.badlogic.androidgames.framework.gl.Camera2D;
 import com.badlogic.androidgames.framework.gl.SpriteBatcher;
 import com.badlogic.androidgames.framework.impl.GLGraphics;
+import com.badlogic.androidgames.framework.math.Rectangle;
 
 public class GameRenderer {
 	
@@ -42,15 +43,23 @@ public class GameRenderer {
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         
         batcher.beginBatch(Assets.foregroundItems);
+        //renderDebugBoard();
         renderLetters();
+        
         batcher.endBatch();
         gl.glDisable(GL10.GL_BLEND);
 	}
 	
 	private void renderLetters() {
 		for(int i = 0; i < board.letters.size(); i++) {
-            Letter platform = board.letters.get(i);       
-            batcher.drawSprite(platform.position.x, platform.position.y, 40, 40, Assets.letter);            
+            Letter l = board.letters.get(i);       
+            batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.letter);            
+        }
+	}
+	
+	private void renderDebugBoard() {
+		for (Rectangle r : board.validBoardSpaces) {
+            batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect);            
         }
 	}
 
