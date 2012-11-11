@@ -43,7 +43,6 @@ public class GameRenderer {
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         
         batcher.beginBatch(Assets.foregroundItems);
-        //renderDebugBoard();
         renderLetters();
         
         batcher.endBatch();
@@ -57,6 +56,7 @@ public class GameRenderer {
         }
 	}
 	
+	// Used to check that the validBoardSquares line up with the waffle
 	private void renderDebugBoard() {
 		for (Rectangle r : board.validBoardSpaces) {
             batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect);            

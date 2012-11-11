@@ -65,9 +65,7 @@ public class Board {
 	
 	private void checkValidBoardSpace(Letter l) {
 		for (Rectangle r : validBoardSpaces) {
-			
 			if (OverlapTester.pointInRectangle(r, l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)) {
-				Log.d(WordWaffle.DEBUG_TAG, r.toString());
 				l.setLocation(r.lowerLeft.x, r.lowerLeft.y);
 			}
 		}
