@@ -59,8 +59,12 @@ public class GameRenderer {
 	
 	// Used to check that the validBoardSquares line up with the waffle
 	private void renderDebugBoard() {
-		for (Rectangle r : board.validBoardSpaces) {
-            batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect);            
+		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
+			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
+				Rectangle r = Board.validBoardSpaces[i][j];
+				batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect); 
+			}
+                       
         }
 	}
 
