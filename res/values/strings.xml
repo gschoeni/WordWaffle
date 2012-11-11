@@ -1,8 +1,8 @@
 <resources>
 
     <string name="app_name">Word Waffle</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="play_button">Play</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main_menu">MainMenu</string>
+    <string name="title_activity_main_menu">Word Waffle</string>
 
 </resources>
