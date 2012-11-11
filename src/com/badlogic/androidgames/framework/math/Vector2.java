@@ -1,5 +1,7 @@
 package com.badlogic.androidgames.framework.math;
 
+import com.badlogic.androidgames.framework.impl.GLGraphics;
+
 import android.util.FloatMath;
 
 public class Vector2 {
@@ -123,4 +125,12 @@ public class Vector2 {
         float distY = this.y - y;        
         return distX*distX + distY*distY;
     }       
+    
+    // added this method to get the coords I want in gl land
+    public Vector2 getGLCoords(GLGraphics g, Vector2 touchPoint, int x, int y, float width, float height) {
+    	touchPoint.x = (x / (float) g.getWidth()) * width;
+        touchPoint.y = (1 - y / (float) g.getHeight()) * height;
+        return touchPoint;
+    }
+    
 }

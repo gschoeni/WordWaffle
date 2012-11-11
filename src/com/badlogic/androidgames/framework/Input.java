@@ -2,6 +2,10 @@ package com.badlogic.androidgames.framework;
 
 import java.util.List;
 
+import com.badlogic.androidgames.framework.impl.GLGraphics;
+import com.badlogic.androidgames.framework.math.Vector2;
+import com.csci422.word.waffle.GameRenderer;
+
 public interface Input {
     public static class KeyEvent {
         public static final int KEY_DOWN = 0;
@@ -48,6 +52,7 @@ public interface Input {
             builder.append(y);
             return builder.toString();
         }
+        
     }
 
     public boolean isKeyPressed(int keyCode);

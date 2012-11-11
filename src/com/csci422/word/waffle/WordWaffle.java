@@ -9,6 +9,7 @@ import com.badlogic.androidgames.framework.impl.GLGame;
 public class WordWaffle extends GLGame {
 	
 	boolean firstTimeCreate = true;
+	public static final String DEBUG_TAG = "WordWaffle";
 
 	@Override
 	public Screen getStartScreen() {
