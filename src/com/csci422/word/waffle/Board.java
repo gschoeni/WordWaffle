@@ -43,7 +43,8 @@ public class Board {
 	
 	private void initLetters() {
 		for (int i = 0; i < 5; i++) {
-			Letter l = new Letter(10 + i*50, 50, 40, 40);
+			Letter l = new Letter(10 + i*50, 50, 40, 40, Dictionary.getRandomLetter());
+			Log.d(WordWaffle.DEBUG_TAG, "New letter: "+l.value);
 			letters.add(l);
 		}
 	}
