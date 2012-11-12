@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.Context;
+
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.gl.Camera2D;

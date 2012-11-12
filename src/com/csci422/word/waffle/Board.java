@@ -162,7 +162,7 @@ public class Board {
 		return false;
 	}
 	
-	// direction should be -1 or 1, depending on if we are sliding left of right
+	// direction should be -1 or 1, depending on if we are sliding left or right
 	private void slideLetters(int direction) {
 		Log.d(WordWaffle.DEBUG_TAG, "Slide");
 		int how_much = 50*direction;
