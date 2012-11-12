@@ -43,13 +43,16 @@ public class GameRenderer {
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         
         batcher.beginBatch(Assets.foregroundItems);
+        renderDebugSquares();
         renderLetters();
+        renderLetterTray();
         
         batcher.endBatch();
         gl.glDisable(GL10.GL_BLEND);
 	}
 	
 	private void renderLetters() {
+		
 		for(int i = 0; i < board.letters.size(); i++) {
             Letter l = board.letters.get(i);       
             batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.letter);
@@ -57,15 +60,23 @@ public class GameRenderer {
         }
 	}
 	
+	private void renderLetterTray() {
+		batcher.drawSprite(20, 35, 40, 40, Assets.leftArrow);
+		batcher.drawSprite(300, 35, 40, 40, Assets.rightArrow);
+	}
+	
 	// Used to check that the validBoardSquares line up with the waffle
-	private void renderDebugBoard() {
-		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
-			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
-				Rectangle r = Board.validBoardSpaces[i][j];
-				batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect); 
-			}
-                       
-        }
+	private void renderDebugSquares() {
+//		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
+//			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
+//				Rectangle r = Board.validBoardSpaces[i][j];
+//				batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect); 
+//			}
+//                       
+//        }
+		for (Rectangle r : Board.letterTray) {
+			batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect); 
+		}
 	}
 
 }

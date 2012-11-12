@@ -33,8 +33,14 @@ public class GameScreen extends GLScreen {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 		for(int i = 0; i < touchEvents.size(); i++) {
 	        TouchEvent event = touchEvents.get(i);
+	        // the points returned are backward in openGL land so we need to convert them to our coordinate space
 	        touchPoint = touchPoint.getGLCoords(glGraphics, touchPoint, event.x, event.y, GameRenderer.FRUSTUM_WIDTH, GameRenderer.FRUSTUM_HEIGHT);
+	        if(board.checkSlideLettersTray(event, touchPoint)) {
+	        	// we are trying to slide the letters in the letters tray
+	        	break;
+	        }
 	        board.checkDraggingLetter(event, touchPoint);
+	        
 	    }
 		
 	}
