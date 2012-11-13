@@ -1,7 +1,9 @@
 package com.csci422.word.waffle;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.util.Log;
 
@@ -20,6 +22,7 @@ public class Board {
 	private char[][] letterLocations = new char[BOARD_WIDTH][BOARD_HEIGHT];
 	public static Rectangle[][] validBoardSpaces = new Rectangle[BOARD_WIDTH][BOARD_HEIGHT];
 	public static List<Letter> letters = new ArrayList<Letter>();
+	public static Set<Word> valid_words = new HashSet<Word>();
 	
 	public static final int NUM_LETTERS = 20;
 	public static List<Rectangle> letterTray = new ArrayList<Rectangle>();
@@ -78,6 +81,7 @@ public class Board {
 	        	l.setLocation(touchPoint.x, touchPoint.y, -1, -1);
 	        } else if (event.type == TouchEvent.TOUCH_UP && l.state == Letter.IS_BEING_DRAGGED) {
 	        	checkValidBoardSpace(l);
+	        	checkForValidWords();
 	        }
 		}
 	}
@@ -93,7 +97,6 @@ public class Board {
 					l.setLocation(r.lowerLeft.x, r.lowerLeft.y, i, j);
 					letterLocations[i][j] = l.value;
 					l.state = Letter.ON_BOARD;
-					checkForValidWords();
 				} else if(overLappingRect) {
 					placeLetterInClosestValidLocation(i, j, l);
 				} else if (outsideWaffle(l)) {
@@ -184,22 +187,27 @@ public class Board {
 		Log.d(WordWaffle.DEBUG_TAG, "Check Valid Words");
 		String valid_vertical = "";
 		String valid_horizontal = "";
-		
+		valid_words.clear();
 		// Check Horizontal
 		for (int i = 0; i < BOARD_WIDTH; i++) {
 			for (int j = 0; j < BOARD_HEIGHT; j++) {
 				if (letterLocations[j][i] != ' ') {
 					valid_horizontal += letterLocations[j][i];
 				} else if (letterLocations[j][i] == ' ' && valid_horizontal != "") {
+					// case where we have a valid word and the next spot is blank
 					if (Dictionary.isValidWord(valid_horizontal)) {
 						//Log.d(WordWaffle.DEBUG_TAG, "Horizontal " + valid_horizontal);
+						valid_words.add(new Word(valid_horizontal));
+						valid_horizontal = "";
 					}
 				} else {
-					valid_horizontal = "";
+					
 				}
 			}
+			// case where we are at the end of the row and have a valid word
 			if (valid_horizontal != "" && Dictionary.isValidWord(valid_horizontal)) {
-				Log.d(WordWaffle.DEBUG_TAG, "Horizontal "+valid_horizontal);
+				//Log.d(WordWaffle.DEBUG_TAG, "Horizontal "+valid_horizontal);
+				valid_words.add(new Word(valid_horizontal));
 			}
 			valid_horizontal = "";
 		}
@@ -210,20 +218,25 @@ public class Board {
 				if (letterLocations[i][j] != ' ') {
 					valid_vertical += letterLocations[i][j];
 				} else if (letterLocations[i][j] == ' ' && valid_vertical != "") {
+					// case where we have a valid word and the next spot is blank
 					if (Dictionary.isValidWord(valid_vertical)) {
 						//Log.d(WordWaffle.DEBUG_TAG, "Vertical "+valid_vertical);
+						valid_words.add(new Word(valid_vertical));
+						valid_vertical = "";
 					}
 				} else {
 					valid_vertical = "";
 				}
 			}
+			// case where we are at the end of the column and have a valid word
 			if (valid_vertical != "" && Dictionary.isValidWord(valid_vertical)) {
-				Log.d(WordWaffle.DEBUG_TAG, "Vertical "+valid_vertical);
+				//Log.d(WordWaffle.DEBUG_TAG, "Vertical "+valid_vertical);
+				valid_words.add(new Word(valid_vertical));
 			}
 			valid_vertical = "";
 		}
 		
-		
+		Log.d(WordWaffle.DEBUG_TAG, "Found Words: "+valid_words);
 	}
 	
 
