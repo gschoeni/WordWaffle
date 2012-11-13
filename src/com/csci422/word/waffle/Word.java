@@ -1,8 +1,7 @@
 package com.csci422.word.waffle;
 
 import java.util.ArrayList;
-
-import android.util.Log;
+import java.util.List;
 
 // A word will hold a string that is a valid word on the board
 // as well as its letters locations on the board
@@ -12,14 +11,16 @@ import android.util.Log;
 public class Word {
 
 	public String word;
-	public ArrayList<Integer> board_locations;
+	public ArrayList<Integer> board_locations = new ArrayList<Integer>();
+	public boolean isHorizontal = false;
 	
-	public Word(String w) {
-		board_locations = new ArrayList<Integer>();
+	public Word(String w, ArrayList<Integer> locations, boolean isH) {
 		word = w;
+		isHorizontal = isH;
+		for (Integer l : locations)
+			board_locations.add(l);
+		
 	}
-	
-	
 	
 	@Override
 	public int hashCode() {
@@ -30,8 +31,6 @@ public class Word {
 		result = prime * result + ((word == null) ? 0 : word.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -59,6 +58,6 @@ public class Word {
 
 	@Override
 	public String toString() {
-		return word;
+		return word + " locations: " +board_locations + " isHorizontal: "+isHorizontal;
 	}
 }
