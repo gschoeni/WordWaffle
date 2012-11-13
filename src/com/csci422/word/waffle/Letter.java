@@ -8,7 +8,7 @@ public class Letter extends GameObject {
 	public static final int IN_TRAY = 0;
 	public static final int IS_BEING_DRAGGED = 1;
 	public static final int ON_BOARD = 2;
-	public static final int INVALID_LOCATION = 3;
+	public static final int VALID_LOCATION = 3;
 	public char value;
 	public int row = -1;
 	public int col = -1;

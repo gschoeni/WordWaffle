@@ -21,6 +21,7 @@ public class Board {
 	public static final int BOARD_HEIGHT = 7;
 	private char[][] letterLocations = new char[BOARD_WIDTH][BOARD_HEIGHT];
 	public static Rectangle[][] validBoardSpaces = new Rectangle[BOARD_WIDTH][BOARD_HEIGHT];
+	//public static Letter[][] letters = new Letter[BOARD_WIDTH][BOARD_HEIGHT];
 	public static List<Letter> letters = new ArrayList<Letter>();
 	public static Set<Word> valid_words = new HashSet<Word>();
 	public static ArrayList<int[]> letter_chain = new ArrayList<int[]>();
@@ -253,9 +254,14 @@ public class Board {
 	}
 	
 	private void setLetterStates() {
-		for (Word w : valid_words) {
-			for (int[] l : w.board_locations) {
-				Log.d(WordWaffle.DEBUG_TAG, "Color Locations row: "+l[0] + " col: " + l[1]);
+		for (Letter letter : letters) {
+			for (Word w : valid_words) {
+				for (int[] letter_location : w.board_locations) {
+					if (letter.row == letter_location[0] && letter.col == letter_location[1]) {
+						Log.d(WordWaffle.DEBUG_TAG, "Color Locations row: "+letter_location[0] + " col: " + letter_location[1]);
+						letter.state = Letter.VALID_LOCATION;
+					} 
+				}
 			}
 		}
 	}

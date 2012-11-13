@@ -53,9 +53,14 @@ public class GameRenderer {
 	
 	private void renderLetters() {
 		
-		for(int i = 0; i < board.letters.size(); i++) {
-            Letter l = board.letters.get(i);       
-            batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.letter);
+		for(int i = 0; i < Board.letters.size(); i++) {
+            Letter l = Board.letters.get(i);
+            if (l.state == Letter.VALID_LOCATION) {
+            	batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.valid_letter);
+            } else {
+            	batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.letter);
+            }
+            
             Assets.font.drawText(batcher, l.toString(), l.position.x, l.position.y, 30, 30);
         }
 	}
