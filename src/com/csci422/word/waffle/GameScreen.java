@@ -45,8 +45,6 @@ public class GameScreen extends GLScreen {
 	        }
 	        board.checkDraggingLetter(event, touchPoint);
 	    }
-		board.checkForValidWords();
-		
 	}
 
 	@Override

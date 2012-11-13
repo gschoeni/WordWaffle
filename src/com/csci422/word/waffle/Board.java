@@ -93,6 +93,7 @@ public class Board {
 					l.setLocation(r.lowerLeft.x, r.lowerLeft.y, i, j);
 					letterLocations[i][j] = l.value;
 					l.state = Letter.ON_BOARD;
+					checkForValidWords();
 				} else if(overLappingRect) {
 					placeLetterInClosestValidLocation(i, j, l);
 				} else if (outsideWaffle(l)) {
@@ -180,35 +181,49 @@ public class Board {
 	}
 	
 	public void checkForValidWords() {
+		Log.d(WordWaffle.DEBUG_TAG, "Check Valid Words");
 		String valid_vertical = "";
 		String valid_horizontal = "";
 		
+		// Check Horizontal
 		for (int i = 0; i < BOARD_WIDTH; i++) {
 			for (int j = 0; j < BOARD_HEIGHT; j++) {
-				
-				if (letterLocations[i][j] != ' ') {
-					valid_vertical += letterLocations[i][j];
-				} else if (letterLocations[i][j] == ' ' && valid_vertical != "") {
-					if (Dictionary.isValidWord(valid_vertical)) {
-						Log.d(WordWaffle.DEBUG_TAG, valid_vertical);
-					}
-				} else {
-					valid_vertical = "";
-				}
-				
 				if (letterLocations[j][i] != ' ') {
 					valid_horizontal += letterLocations[j][i];
-				} else if (letterLocations[i][j] == ' ' && valid_horizontal != "") {
+				} else if (letterLocations[j][i] == ' ' && valid_horizontal != "") {
 					if (Dictionary.isValidWord(valid_horizontal)) {
-						Log.d(WordWaffle.DEBUG_TAG, valid_horizontal);
+						//Log.d(WordWaffle.DEBUG_TAG, "Horizontal " + valid_horizontal);
 					}
 				} else {
 					valid_horizontal = "";
 				}
 			}
-			valid_vertical = "";
+			if (valid_horizontal != "" && Dictionary.isValidWord(valid_horizontal)) {
+				Log.d(WordWaffle.DEBUG_TAG, "Horizontal "+valid_horizontal);
+			}
 			valid_horizontal = "";
 		}
+		
+		// Check Vertical
+		for (int i = 0; i < BOARD_WIDTH; i++) {
+			for (int j = BOARD_HEIGHT - 1; j >= 0; j--) {
+				if (letterLocations[i][j] != ' ') {
+					valid_vertical += letterLocations[i][j];
+				} else if (letterLocations[i][j] == ' ' && valid_vertical != "") {
+					if (Dictionary.isValidWord(valid_vertical)) {
+						//Log.d(WordWaffle.DEBUG_TAG, "Vertical "+valid_vertical);
+					}
+				} else {
+					valid_vertical = "";
+				}
+			}
+			if (valid_vertical != "" && Dictionary.isValidWord(valid_vertical)) {
+				Log.d(WordWaffle.DEBUG_TAG, "Vertical "+valid_vertical);
+			}
+			valid_vertical = "";
+		}
+		
+		
 	}
 	
 
