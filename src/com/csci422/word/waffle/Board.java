@@ -12,7 +12,6 @@ import com.badlogic.androidgames.framework.math.OverlapTester;
 import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
 
-
 public class Board {
 	
 	public static final float WORLD_WIDTH = 320;
@@ -71,6 +70,9 @@ public class Board {
 			if (event.type == TouchEvent.TOUCH_DOWN && OverlapTester.pointInRectangle(l.bounds, touchPoint)) {
 	        	l.state = Letter.IS_BEING_DRAGGED;
 	        	usedTrayLocations[letters.indexOf(l)] = false;
+	        	Log.d(WordWaffle.DEBUG_TAG, "Index set to false -- " + letters.indexOf(l));
+	        	for(int i = 0; i < NUM_LETTERS; i++)       		
+	        		Log.d(WordWaffle.DEBUG_TAG, "Tray " + i + ": " + usedTrayLocations[i]);
 	        	
 	        	// if this piece is in a valid board location it has now been picked up
 	        	// so set the value for that square back to ' '
@@ -101,13 +103,15 @@ public class Board {
 					l.state = Letter.ON_BOARD;
 				} else if(overLappingRect) {
 					placeLetterInClosestValidLocation(i, j, l);
-				} else if (outsideWaffle(l)) {
-					placeLetterBackInTray(l);
+				} else if (outsideWaffleTop(l)) {
+					placeLetterInTraySpace(l, false);
+				} else if (outsideWaffleBottom(l)) {
+					placeLetterInTraySpace(l, true);
 				}
 			}
 		}
 	}
-	
+
 	// This method assumes the player tried to put a letter in a space that is already taken
 	// So it checks if top, right, bottom, or left are taken, and places the square in the first position  
 	// that is not taken
@@ -137,22 +141,32 @@ public class Board {
 		} 
 		// put back in letter tray
 		else {
-			placeLetterBackInTray(l);
+			placeLetterInTraySpace(l,false);
 		}
 		
 	}
 	
-	private boolean outsideWaffle(Letter l) {
-		return l.position.y < 80 || l.position.y > 390;
+	private boolean outsideWaffleTop(Letter l) {
+		return l.position.y > 390;
 	}
 	
-	private void placeLetterBackInTray(Letter l) {
-		for (int i = 0; i < NUM_LETTERS; i++) {
-			if (usedTrayLocations[i] == false) {
-				l.setLocation(letterTray.get(i).lowerLeft.x, letterTray.get(i).lowerLeft.y, -1, -1);
-				l.state = Letter.IN_TRAY;
-				usedTrayLocations[i] = true;
-				break;
+	private boolean outsideWaffleBottom(Letter l){
+		return l.position.y < 80;
+	}
+	
+	//This method places in tray space if it is empty
+	private void placeLetterInTraySpace(Letter l, boolean placeBack) {
+		for (int i = 0; i < NUM_LETTERS; i++){
+			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[i]);
+			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(i), l.position));
+			if(placeBack){
+				if (usedTrayLocations[i] == false && OverlapTester.pointInRectangle(letterTray.get(i), l.position)){
+					Log.d(WordWaffle.DEBUG_TAG, "Placing in empty space");
+					l.setLocation(letterTray.get(i).lowerLeft.x, letterTray.get(i).lowerLeft.y, -1, -1);
+					l.state = Letter.IN_TRAY;
+					usedTrayLocations[i] = true;
+					break;
+				}
 			}
 		}
 	}
