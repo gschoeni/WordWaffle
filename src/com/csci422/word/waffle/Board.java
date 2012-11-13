@@ -179,5 +179,37 @@ public class Board {
 		}
 	}
 	
+	public void checkForValidWords() {
+		String valid_vertical = "";
+		String valid_horizontal = "";
+		
+		for (int i = 0; i < BOARD_WIDTH; i++) {
+			for (int j = 0; j < BOARD_HEIGHT; j++) {
+				
+				if (letterLocations[i][j] != ' ') {
+					valid_vertical += letterLocations[i][j];
+				} else if (letterLocations[i][j] == ' ' && valid_vertical != "") {
+					if (Dictionary.isValidWord(valid_vertical)) {
+						Log.d(WordWaffle.DEBUG_TAG, valid_vertical);
+					}
+				} else {
+					valid_vertical = "";
+				}
+				
+				if (letterLocations[j][i] != ' ') {
+					valid_horizontal += letterLocations[j][i];
+				} else if (letterLocations[i][j] == ' ' && valid_horizontal != "") {
+					if (Dictionary.isValidWord(valid_horizontal)) {
+						Log.d(WordWaffle.DEBUG_TAG, valid_horizontal);
+					}
+				} else {
+					valid_horizontal = "";
+				}
+			}
+			valid_vertical = "";
+			valid_horizontal = "";
+		}
+	}
+	
 
 }

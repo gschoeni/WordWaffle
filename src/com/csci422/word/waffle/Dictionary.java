@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -19,7 +20,7 @@ public class Dictionary {
 	private static char[] alphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 	private static Random generator = new Random();
 	public final static String words_file = "valid_words.txt";
-	public static ArrayList<String> validWords = new ArrayList<String>();
+	public static Set<String> validWords = new TreeSet<String>();
 	
 	// Suppress default constructor for noninstantiability
     private Dictionary() {
@@ -58,11 +59,12 @@ public class Dictionary {
         }
     }
     
-    public boolean isValidWord(String s) {
-    	// long start = System.nanoTime();
-		boolean valid = Dictionary.validWords.contains("xybjhsdka");
-		// long elapsedTime = System.nanoTime() - start;
-		// Log.d(WordWaffle.DEBUG_TAG, "Finding word in dictionary: "+ elapsedTime);
+    public static boolean isValidWord(String s) {
+    	//long start = System.nanoTime();
+		boolean valid = validWords.contains(s);
+		//Log.d(WordWaffle.DEBUG_TAG, "JOB is "+ valid);
+		//long elapsedTime = System.nanoTime() - start;
+		//Log.d(WordWaffle.DEBUG_TAG, "Finding word in dictionary took: "+ elapsedTime+" ns");
 		return valid;
     }
     

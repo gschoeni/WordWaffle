@@ -29,8 +29,9 @@ public class WordWaffle extends GLGame {
             long start = System.nanoTime();    
     		Dictionary.readRawTextFile(getFileIO(), getApplicationContext());
     		long elapsedTime = System.nanoTime() - start;
-    		Log.d(WordWaffle.DEBUG_TAG, "Loading file elapsed time: "+ elapsedTime);
-    		
+//    		Log.d(WordWaffle.DEBUG_TAG, "Loading file elapsed time: "+ elapsedTime);
+//    		boolean valid = Dictionary.validWords.contains("bdslkaj");
+//    		Log.d(WordWaffle.DEBUG_TAG, "After load JOB is "+ valid);
             firstTimeCreate = false;            
         } else {
             Assets.reload();

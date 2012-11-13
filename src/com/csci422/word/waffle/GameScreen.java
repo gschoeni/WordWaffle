@@ -32,6 +32,8 @@ public class GameScreen extends GLScreen {
 
 	@Override
 	public void update(float deltaTime) {
+		// We will want to do different things depending on the game state, but we don't have game states yet so hold your horses
+		
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 		for(int i = 0; i < touchEvents.size(); i++) {
 	        TouchEvent event = touchEvents.get(i);
@@ -42,8 +44,8 @@ public class GameScreen extends GLScreen {
 	        	break;
 	        }
 	        board.checkDraggingLetter(event, touchPoint);
-	        
 	    }
+		board.checkForValidWords();
 		
 	}
 
