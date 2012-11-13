@@ -11,13 +11,13 @@ import java.util.List;
 public class Word {
 
 	public String word;
-	public ArrayList<Integer> board_locations = new ArrayList<Integer>();
+	public ArrayList<int[]> board_locations = new ArrayList<int[]>();
 	public boolean isHorizontal = false;
 	
-	public Word(String w, ArrayList<Integer> locations, boolean isH) {
+	public Word(String w, ArrayList<int[]> locations, boolean isH) {
 		word = w;
 		isHorizontal = isH;
-		for (Integer l : locations)
+		for (int[] l : locations)
 			board_locations.add(l);
 		
 	}
@@ -58,6 +58,6 @@ public class Word {
 
 	@Override
 	public String toString() {
-		return word + " locations: " +board_locations + " isHorizontal: "+isHorizontal;
+		return word + " locations: " + board_locations + " isHorizontal: "+isHorizontal;
 	}
 }
