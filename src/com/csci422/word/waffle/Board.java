@@ -69,7 +69,7 @@ public class Board {
 			// letter was tapped, will move if it is being dragged
 			if (event.type == TouchEvent.TOUCH_DOWN && OverlapTester.pointInRectangle(l.bounds, touchPoint)) {
 	        	l.state = Letter.IS_BEING_DRAGGED;
-	        	usedTrayLocations[letters.indexOf(l)] = false;
+	        	usedTrayLocations[letters.indexOf(l)] = false; //source of error
 	        	Log.d(WordWaffle.DEBUG_TAG, "Index set to false -- " + letters.indexOf(l));
 	        	for(int i = 0; i < NUM_LETTERS; i++)       		
 	        		Log.d(WordWaffle.DEBUG_TAG, "Tray " + i + ": " + usedTrayLocations[i]);
@@ -156,19 +156,23 @@ public class Board {
 	
 	//This method places in tray space if it is empty
 	private void placeLetterInTraySpace(Letter l, boolean placeBack) {
-		for (int i = 0; i < NUM_LETTERS; i++){
+		int loc;
+		for (loc = 0; loc < NUM_LETTERS; loc++){
 			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[i]);
 			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(i), l.position));
-			if(placeBack){
-				if (usedTrayLocations[i] == false && OverlapTester.pointInRectangle(letterTray.get(i), l.position)){
+			if(placeBack){ //user drags object to space
+				if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position)){
 					Log.d(WordWaffle.DEBUG_TAG, "Placing in empty space");
-					l.setLocation(letterTray.get(i).lowerLeft.x, letterTray.get(i).lowerLeft.y, -1, -1);
-					l.state = Letter.IN_TRAY;
-					usedTrayLocations[i] = true;
 					break;
 				}
 			}
+			else{ //user drags object off board
+				if (usedTrayLocations[loc] == false) break;
+			}
 		}
+		l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+		l.state = Letter.IN_TRAY;
+		usedTrayLocations[loc] = true;	
 	}
 	
 	public boolean checkSlideLettersTray(TouchEvent event, Vector2 touchPoint) { 
