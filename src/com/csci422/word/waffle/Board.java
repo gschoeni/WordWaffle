@@ -70,9 +70,9 @@ public class Board {
 			if (event.type == TouchEvent.TOUCH_DOWN && OverlapTester.pointInRectangle(l.bounds, touchPoint)) {
 	        	l.state = Letter.IS_BEING_DRAGGED;
 	        	usedTrayLocations[letters.indexOf(l)] = false; //source of error
-	        	Log.d(WordWaffle.DEBUG_TAG, "Index set to false -- " + letters.indexOf(l));
+	        	//Log.d(WordWaffle.DEBUG_TAG, "Index set to false -- " + letters.indexOf(l));
 	        	for(int i = 0; i < NUM_LETTERS; i++)       		
-	        		Log.d(WordWaffle.DEBUG_TAG, "Tray " + i + ": " + usedTrayLocations[i]);
+	        		//Log.d(WordWaffle.DEBUG_TAG, "Tray " + i + ": " + usedTrayLocations[i]);
 	        	
 	        	// if this piece is in a valid board location it has now been picked up
 	        	// so set the value for that square back to ' '
@@ -222,9 +222,9 @@ public class Board {
 					// case where we have a valid word and the next spot is blank
 					if (Dictionary.isValidWord(valid_horizontal)) {
 						valid_words.add(new Word(valid_horizontal, letter_chain, horizontal));
-						valid_horizontal = "";
-						letter_chain.clear();
 					}
+					valid_horizontal = "";
+					letter_chain.clear();
 				} else {
 					valid_horizontal = "";
 					letter_chain.clear();
@@ -251,9 +251,9 @@ public class Board {
 					// case where we have a valid word and the next spot is blank
 					if (Dictionary.isValidWord(valid_vertical)) {
 						valid_words.add(new Word(valid_vertical, letter_chain, horizontal));
-						valid_vertical = "";
-						letter_chain.clear();
 					}
+					valid_vertical = "";
+					letter_chain.clear();
 				} else {
 					valid_vertical = "";
 					letter_chain.clear();
@@ -272,6 +272,11 @@ public class Board {
 	}
 	
 	private void setLetterStates() {
+		for (Letter letter : letters) {
+			if (letter.state == Letter.VALID_LOCATION)
+				letter.state = Letter.ON_BOARD;
+		}
+		
 		for (Letter letter : letters) {
 			for (Word w : valid_words) {
 				for (int[] letter_location : w.board_locations) {
