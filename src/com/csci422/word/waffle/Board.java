@@ -23,6 +23,7 @@ public class Board {
 	//public static Letter[][] letters = new Letter[BOARD_WIDTH][BOARD_HEIGHT];
 	public static List<Letter> letters = new ArrayList<Letter>();
 	public static Set<Word> valid_words = new HashSet<Word>();
+	public static Set<Word> invalid_words = new HashSet<Word>();
 	public static ArrayList<int[]> letter_chain = new ArrayList<int[]>();
 	
 	public static final int NUM_LETTERS = 20;
@@ -100,7 +101,7 @@ public class Board {
 				if (letterLocations[i][j] == ' '  && overLappingRect) {
 					l.setLocation(r.lowerLeft.x, r.lowerLeft.y, i, j);
 					letterLocations[i][j] = l.value;
-					l.state = Letter.ON_BOARD;
+					l.state = Letter.INVALID_LOCATION;
 				} else if(overLappingRect) {
 					placeLetterInClosestValidLocation(i, j, l);
 				} else if (outsideWaffleTop(l)) {
@@ -117,7 +118,7 @@ public class Board {
 	// that is not taken
 	private void placeLetterInClosestValidLocation(int row, int col, Letter l) {
 		// will be placed on board or it's state will be set to back in tray below
-		l.state = Letter.ON_BOARD;
+		l.state = Letter.INVALID_LOCATION;
 		
 		// check top position
 		if (col < BOARD_HEIGHT - 1 && letterLocations[row][col+1] == ' ') {
@@ -156,10 +157,11 @@ public class Board {
 	
 	//This method places in tray space if it is empty
 	private void placeLetterInTraySpace(Letter l, boolean placeBack) {
+		/*
 		int loc;
 		for (loc = 0; loc < NUM_LETTERS; loc++){
-			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[i]);
-			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(i), l.position));
+			Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
+			Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(loc), l.position));
 			if(placeBack){ //user drags object to space
 				if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position)){
 					Log.d(WordWaffle.DEBUG_TAG, "Placing in empty space");
@@ -173,6 +175,7 @@ public class Board {
 		l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
 		l.state = Letter.IN_TRAY;
 		usedTrayLocations[loc] = true;	
+		*/
 	}
 	
 	public boolean checkSlideLettersTray(TouchEvent event, Vector2 touchPoint) { 
@@ -208,6 +211,7 @@ public class Board {
 		String valid_vertical = "";
 		String valid_horizontal = "";
 		valid_words.clear();
+		invalid_words.clear();
 		letter_chain.clear();
 		
 		// Check Horizontal
@@ -220,9 +224,7 @@ public class Board {
 					letter_chain.add(a);
 				} else if (letterLocations[j][i] == ' ' && valid_horizontal != "") {
 					// case where we have a valid word and the next spot is blank
-					if (Dictionary.isValidWord(valid_horizontal)) {
-						valid_words.add(new Word(valid_horizontal, letter_chain, horizontal));
-					}
+					checkIfWordIsValid(valid_horizontal, horizontal);
 					valid_horizontal = "";
 					letter_chain.clear();
 				} else {
@@ -231,9 +233,7 @@ public class Board {
 				}
 			}
 			// case where we are at the end of the row and have a valid word
-			if (valid_horizontal != "" && Dictionary.isValidWord(valid_horizontal)) {
-				valid_words.add(new Word(valid_horizontal, letter_chain, horizontal));
-			}
+			checkIfWordIsValid(valid_horizontal, horizontal);
 			valid_horizontal = "";
 			letter_chain.clear();
 		}
@@ -249,9 +249,7 @@ public class Board {
 					letter_chain.add(a);
 				} else if (letterLocations[i][j] == ' ' && valid_vertical != "") {
 					// case where we have a valid word and the next spot is blank
-					if (Dictionary.isValidWord(valid_vertical)) {
-						valid_words.add(new Word(valid_vertical, letter_chain, horizontal));
-					}
+					checkIfWordIsValid(valid_vertical, horizontal);
 					valid_vertical = "";
 					letter_chain.clear();
 				} else {
@@ -260,29 +258,50 @@ public class Board {
 				}
 			}
 			// case where we are at the end of the column and have a valid word
-			if (valid_vertical != "" && Dictionary.isValidWord(valid_vertical)) {
-				valid_words.add(new Word(valid_vertical, letter_chain, horizontal));
-			}
+			checkIfWordIsValid(valid_vertical, horizontal);
 			valid_vertical = "";
 			letter_chain.clear();
 		}
 		
 		Log.d(WordWaffle.DEBUG_TAG, "Found Words: "+valid_words);
+		Log.d(WordWaffle.DEBUG_TAG, "Invaid Words: "+invalid_words);
 		setLetterStates();
 	}
 	
+	private void checkIfWordIsValid(String string_to_check, boolean isHorizontal) {
+		if (Dictionary.isValidWord(string_to_check)) {
+			valid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
+		} else if(string_to_check.length() > 1 && letter_chain.size() > 0) {
+			invalid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
+		}
+	}
+	
 	private void setLetterStates() {
+		// assume all letters are invalid
 		for (Letter letter : letters) {
 			if (letter.state == Letter.VALID_LOCATION)
-				letter.state = Letter.ON_BOARD;
+				letter.state = Letter.INVALID_LOCATION;
 		}
 		
+		// check the valid words we have found and set valid letters appropriately
 		for (Letter letter : letters) {
 			for (Word w : valid_words) {
 				for (int[] letter_location : w.board_locations) {
 					if (letter.row == letter_location[0] && letter.col == letter_location[1]) {
-						Log.d(WordWaffle.DEBUG_TAG, "Color Locations row: "+letter_location[0] + " col: " + letter_location[1]);
+						//Log.d(WordWaffle.DEBUG_TAG, "Color Locations row: "+letter_location[0] + " col: " + letter_location[1]);
 						letter.state = Letter.VALID_LOCATION;
+					} 
+				}
+			}
+		}
+		
+		// check if a letter that is in a valid word is also in an invalid word
+		for (Letter letter : letters) {
+			for (Word w : invalid_words) {
+				for (int[] letter_location : w.board_locations) {
+					if (letter.row == letter_location[0] && letter.col == letter_location[1]) {
+						//Log.d(WordWaffle.DEBUG_TAG, "Color Locations row: "+letter_location[0] + " col: " + letter_location[1]);
+						letter.state = Letter.INVALID_LOCATION;
 					} 
 				}
 			}

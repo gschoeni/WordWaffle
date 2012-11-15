@@ -58,6 +58,6 @@ public class Word {
 
 	@Override
 	public String toString() {
-		return word + " locations: " + board_locations + " isHorizontal: "+isHorizontal;
+		return word;
 	}
 }

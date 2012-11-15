@@ -59,7 +59,7 @@ public class GameRenderer {
             	case Letter.VALID_LOCATION:
             		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH, Letter.HEIGHT, Assets.valid_letter);
             		break;
-            	case Letter.ON_BOARD:
+            	case Letter.INVALID_LOCATION:
             		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH, Letter.HEIGHT, Assets.invalid_letter);
             		break;
             	case Letter.IS_BEING_DRAGGED:
