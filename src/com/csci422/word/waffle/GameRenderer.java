@@ -52,16 +52,27 @@ public class GameRenderer {
 	}
 	
 	private void renderLetters() {
-		
+		float letter_scale = 1.0f;
 		for(int i = 0; i < Board.letters.size(); i++) {
             Letter l = Board.letters.get(i);
-            if (l.state == Letter.VALID_LOCATION) {
-            	batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.valid_letter);
-            } else {
-            	batcher.drawSprite(l.position.x, l.position.y, 40, 40, Assets.letter);
+            switch(l.state) {
+            	case Letter.VALID_LOCATION:
+            		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH, Letter.HEIGHT, Assets.valid_letter);
+            		break;
+            	case Letter.ON_BOARD:
+            		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH, Letter.HEIGHT, Assets.invalid_letter);
+            		break;
+            	case Letter.IS_BEING_DRAGGED:
+            		letter_scale = 1.5f;
+            		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH * letter_scale, Letter.HEIGHT * letter_scale, Assets.letter);
+            		break;
+            	default:
+            		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH, Letter.HEIGHT, Assets.letter);
+            		break;
             }
             
-            Assets.font.drawText(batcher, l.toString(), l.position.x, l.position.y, 30, 30);
+            Assets.font.drawText(batcher, l.toString(), l.position.x, l.position.y, 25 * letter_scale, 25 * letter_scale);
+            letter_scale = 1.0f;
         }
 	}
 	

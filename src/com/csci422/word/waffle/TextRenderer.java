@@ -30,7 +30,7 @@ public class TextRenderer {
         }        
     }
     
-    public void drawText(SpriteBatcher batcher, String text, float x, float y, int width, int height) {
+    public void drawText(SpriteBatcher batcher, String text, float x, float y, float width, float height) {
         int len = text.length();
         for(int i = 0; i < len; i++) {
         	//Log.d(WordWaffle.DEBUG_TAG, "char: "+text.charAt(i));
