@@ -157,7 +157,6 @@ public class Board {
 	
 	//This method places in tray space if it is empty
 	private void placeLetterInTraySpace(Letter l, boolean placeBack) {
-		/*
 		int loc;
 		for (loc = 0; loc < NUM_LETTERS; loc++){
 			Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
@@ -175,7 +174,6 @@ public class Board {
 		l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
 		l.state = Letter.IN_TRAY;
 		usedTrayLocations[loc] = true;	
-		*/
 	}
 	
 	public boolean checkSlideLettersTray(TouchEvent event, Vector2 touchPoint) { 
@@ -265,7 +263,7 @@ public class Board {
 		
 		Log.d(WordWaffle.DEBUG_TAG, "Found Words: "+valid_words);
 		Log.d(WordWaffle.DEBUG_TAG, "Invaid Words: "+invalid_words);
-		setLetterStates();
+		setValidAndInvalidLetters();
 	}
 	
 	private void checkIfWordIsValid(String string_to_check, boolean isHorizontal) {
@@ -276,12 +274,17 @@ public class Board {
 		}
 	}
 	
-	private void setLetterStates() {
+	private void setValidAndInvalidLetters() {
 		// assume all letters are invalid
 		for (Letter letter : letters) {
 			if (letter.state == Letter.VALID_LOCATION)
 				letter.state = Letter.INVALID_LOCATION;
 		}
+		
+		// Letters know where they are on the board,
+		// valid_words and invalid_words know about the words that are valid/invalid and where they are.
+		// I can't think of a better way to do this without scraping the data structures we have right now
+		// but that's okay it works..
 		
 		// check the valid words we have found and set valid letters appropriately
 		for (Letter letter : letters) {
