@@ -90,7 +90,7 @@ public class GameRenderer {
 	
 	private void renderTimer() {
 		Assets.letterRenderer.drawText(batcher, "TIME", 200, 415, 20, 20, 15);
-		Assets.numberRenderer.drawNumber(batcher, GameScreen.time, 265, 415, 20, 20, 15);
+		Assets.numberRenderer.drawNumber(batcher, Board.time, 265, 415, 20, 20, 15);
 	}
 	
 	

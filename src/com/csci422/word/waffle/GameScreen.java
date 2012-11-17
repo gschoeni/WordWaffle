@@ -4,12 +4,13 @@ import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
+import android.util.Log;
 
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.gl.Camera2D;
 import com.badlogic.androidgames.framework.gl.SpriteBatcher;
+import com.badlogic.androidgames.framework.impl.GLGame;
 import com.badlogic.androidgames.framework.impl.GLScreen;
 import com.badlogic.androidgames.framework.math.Vector2;
 
@@ -20,10 +21,9 @@ public class GameScreen extends GLScreen {
 	GameRenderer renderer;
 	Board board;
 	Vector2 touchPoint;
-	private float timeLeft = 120.0f;
-	public static String time;
 	
-	public GameScreen(Game game) {
+	
+	public GameScreen(WordWaffle game) {
 		super(game);
 		guiCam = new Camera2D(glGraphics, 320, 480);
 		batcher = new SpriteBatcher(glGraphics, 1000);
@@ -34,8 +34,21 @@ public class GameScreen extends GLScreen {
 
 	@Override
 	public void update(float deltaTime) {
-		// We will want to do different things depending on the game state, but we don't have game states yet so hold your horses
-		calcTimeLeft(deltaTime);
+		
+		switch (board.state) {
+			case Board.GAME_RUNNING:
+				updateRunning(deltaTime);
+				break;
+			case Board.GAME_OVER:
+				gameOver();
+				break;
+			default:
+
+				break;
+		}
+	}
+	
+	private void updateRunning(float deltaTime) {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 		for(int i = 0; i < touchEvents.size(); i++) {
 	        TouchEvent event = touchEvents.get(i);
@@ -47,6 +60,12 @@ public class GameScreen extends GLScreen {
 	        }
 	        board.checkDraggingLetter(event, touchPoint);
 	    }
+		
+		board.update(deltaTime);
+	}
+	
+	private void gameOver() {
+		glGame.finish();
 	}
 
 	@Override
@@ -84,20 +103,6 @@ public class GameScreen extends GLScreen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	private void calcTimeLeft(float deltaTime) {
-		timeLeft -= deltaTime;
-		if (timeLeft < 60) {
-			time = "0:";
-		} else {
-			time = "1:";
-		}
-		
-		if (timeLeft % 60 < 10) {
-			time += "0";
-		}
-		time += String.format("%.0f", timeLeft % 60);
 	}
 
 }

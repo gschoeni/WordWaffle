@@ -35,8 +35,18 @@ public class Board {
 	public static Rectangle slideRightBounds = new Rectangle(280, 0, 40, 60);
 	
 	public static int score;
+	private float timeLeft = 120.0f;
+	public static String time;
+	
+	public static final int GAME_READY = 0;
+	public static final int GAME_RUNNING = 1;
+	public static final int GAME_PAUSED = 2;
+	public static final int GAME_OVER = 3;
+	
+	public int state;
 	
 	public Board() {
+		state = Board.GAME_RUNNING;
 		initBoardSpaces();
 		initLetters();
 	}
@@ -65,6 +75,11 @@ public class Board {
 			letterTray.add(new Rectangle(x_offset + i*(Letter.WIDTH+padding), y_offset, Letter.WIDTH, Letter.HEIGHT));
 			usedTrayLocations[i] = true;
 		}
+	}
+	
+	public void update(float deltaTime) {
+		calcTimeLeft(deltaTime);
+		checkGameOver();
 	}
 	
 	public void checkDraggingLetter(TouchEvent event, Vector2 touchPoint) {
@@ -318,5 +333,24 @@ public class Board {
 		score = ScoreCalculator.calculateScore(valid_words, invalid_words);
 	}
 	
+	private void calcTimeLeft(float deltaTime) {
+		timeLeft -= deltaTime;
+		if (timeLeft < 60) {
+			time = "0:";
+		} else {
+			time = "1:";
+		}
+		
+		if (timeLeft % 60 < 10) {
+			time += "0";
+		}
+		time += String.format("%.0f", timeLeft % 60);
+	}
+	
+	private void checkGameOver() {
+		if (timeLeft <= 0) {
+			state = Board.GAME_OVER;
+		}
+	}
 
 }

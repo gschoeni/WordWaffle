@@ -35,6 +35,7 @@ public class WordWaffle extends GLGame {
             firstTimeCreate = false;            
         } else {
             Assets.reload();
+            
         }
     }     
     

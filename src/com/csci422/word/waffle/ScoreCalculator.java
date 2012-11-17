@@ -4,6 +4,8 @@ import java.util.Set;
 
 public class ScoreCalculator {
 	
+	// each index in this array represents the point value for that length word
+	// for example: 3 letter words are worth 3 point, 4 letter words are 5 points etc
 	private static int[] pointsForLengths = {
 		0,
 		0,
