@@ -44,6 +44,8 @@ public class GameRenderer {
         
         batcher.beginBatch(Assets.foregroundItems);
         renderDebugSquares();
+        renderScore();
+        renderTimer();
         renderLetters();
         renderLetterTray();
         
@@ -71,7 +73,7 @@ public class GameRenderer {
             		break;
             }
             
-            Assets.font.drawText(batcher, l.toString(), l.position.x, l.position.y, 25 * letter_scale, 25 * letter_scale);
+            Assets.letterRenderer.drawText(batcher, l.toString(), l.position.x, l.position.y, 25 * letter_scale, 25 * letter_scale, 0);
             letter_scale = 1.0f;
         }
 	}
@@ -80,6 +82,17 @@ public class GameRenderer {
 		batcher.drawSprite(20, 35, 40, 40, Assets.leftArrow);
 		batcher.drawSprite(300, 35, 40, 40, Assets.rightArrow);
 	}
+	
+	private void renderScore() {
+		 Assets.letterRenderer.drawText(batcher, "SCORE", 10, 415, 20, 20, 15);
+		 Assets.numberRenderer.drawNumber(batcher, ""+Board.score, 95, 415, 20, 20, 15);
+	}
+	
+	private void renderTimer() {
+		Assets.letterRenderer.drawText(batcher, "TIME", 200, 415, 20, 20, 15);
+		Assets.numberRenderer.drawNumber(batcher, GameScreen.time, 265, 415, 20, 20, 15);
+	}
+	
 	
 	// Used to check that the validBoardSquares line up with the waffle
 	private void renderDebugSquares() {

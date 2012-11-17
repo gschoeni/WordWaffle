@@ -34,6 +34,8 @@ public class Board {
 	public static Rectangle slideLeftBounds = new Rectangle(0, 0, 60, 60);
 	public static Rectangle slideRightBounds = new Rectangle(280, 0, 40, 60);
 	
+	public static int score;
+	
 	public Board() {
 		initBoardSpaces();
 		initLetters();
@@ -87,6 +89,7 @@ public class Board {
 	        } else if (event.type == TouchEvent.TOUCH_UP && l.state == Letter.IS_BEING_DRAGGED) {
 	        	checkValidBoardSpace(l);
 	        	checkForValidWords();
+	        	calculateScore();
 	        }
 		}
 	}
@@ -309,6 +312,10 @@ public class Board {
 				}
 			}
 		}
+	}
+	
+	private void calculateScore() {
+		score = ScoreCalculator.calculateScore(valid_words, invalid_words);
 	}
 	
 

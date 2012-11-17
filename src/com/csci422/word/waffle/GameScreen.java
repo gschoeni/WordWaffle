@@ -20,6 +20,8 @@ public class GameScreen extends GLScreen {
 	GameRenderer renderer;
 	Board board;
 	Vector2 touchPoint;
+	private float timeLeft = 120.0f;
+	public static String time;
 	
 	public GameScreen(Game game) {
 		super(game);
@@ -33,7 +35,7 @@ public class GameScreen extends GLScreen {
 	@Override
 	public void update(float deltaTime) {
 		// We will want to do different things depending on the game state, but we don't have game states yet so hold your horses
-		
+		calcTimeLeft(deltaTime);
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 		for(int i = 0; i < touchEvents.size(); i++) {
 	        TouchEvent event = touchEvents.get(i);
@@ -82,6 +84,20 @@ public class GameScreen extends GLScreen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void calcTimeLeft(float deltaTime) {
+		timeLeft -= deltaTime;
+		if (timeLeft < 60) {
+			time = "0:";
+		} else {
+			time = "1:";
+		}
+		
+		if (timeLeft % 60 < 10) {
+			time += "0";
+		}
+		time += String.format("%.0f", timeLeft % 60);
 	}
 
 }

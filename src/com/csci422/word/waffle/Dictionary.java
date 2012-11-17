@@ -46,6 +46,7 @@ public class Dictionary {
 		'Y', 'Y', 
 		'Z'
 	};
+	
 	private static Random generator = new Random();
 	public final static String words_file = "valid_words.txt";
 	public static Set<String> validWords = new TreeSet<String>();

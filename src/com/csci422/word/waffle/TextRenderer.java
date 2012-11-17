@@ -30,7 +30,7 @@ public class TextRenderer {
         }        
     }
     
-    public void drawText(SpriteBatcher batcher, String text, float x, float y, float width, float height) {
+    public void drawText(SpriteBatcher batcher, String text, float x, float y, float width, float height, float x_offset) {
         int len = text.length();
         for(int i = 0; i < len; i++) {
         	//Log.d(WordWaffle.DEBUG_TAG, "char: "+text.charAt(i));
@@ -41,7 +41,27 @@ public class TextRenderer {
             
             TextureRegion glyph = glyphs[c];
             batcher.drawSprite(x, y, width, height, glyph);
-            x += glyphWidth;
+            x += x_offset;
+        }
+    }
+    
+    public void drawNumber(SpriteBatcher batcher, String text, float x, float y, float width, float height, float x_offset) {
+    	int len = text.length();
+        for(int i = 0; i < len; i++) {
+        	//Log.d(WordWaffle.DEBUG_TAG, "char: "+text.charAt(i));
+            int c = text.charAt(i) - '0';
+            
+            if(c < 0 || c > glyphs.length - 1) 
+                continue;
+            
+            TextureRegion glyph = glyphs[c];
+            
+            batcher.drawSprite(x, y, width, height, glyph);
+            x += x_offset;
+            
+            if (c == 10) { // if the "number" is a : then lets tighten it up
+            	x -= x_offset / 2;
+            }
         }
     }
 }
