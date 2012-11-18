@@ -1,6 +1,7 @@
 package com.csci422.word.waffle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,7 +88,7 @@ public class Board {
 			// letter was tapped, will move if it is being dragged
 			if (event.type == TouchEvent.TOUCH_DOWN && OverlapTester.pointInRectangle(l.bounds, touchPoint)) {
 	        	l.state = Letter.IS_BEING_DRAGGED;
-	        	usedTrayLocations[letters.indexOf(l)] = false; //source of error
+	        	usedTrayLocations[letters.indexOf(l)] = false;
 	        	//Log.d(WordWaffle.DEBUG_TAG, "Index set to false -- " + letters.indexOf(l));
 	        	for(int i = 0; i < NUM_LETTERS; i++)       		
 	        		//Log.d(WordWaffle.DEBUG_TAG, "Tray " + i + ": " + usedTrayLocations[i]);
@@ -177,21 +178,39 @@ public class Board {
 	private void placeLetterInTraySpace(Letter l, boolean placeBack) {
 		int loc;
 		for (loc = 0; loc < NUM_LETTERS; loc++){
-			Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
-			Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(loc), l.position));
+			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
+			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(loc), l.position));
 			if(placeBack){ //user drags object to space
 				if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position)){
+					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+					l.state = Letter.IN_TRAY;
+					usedTrayLocations[loc] = true;
+					int tempLoc = letters.indexOf(l);
+					Collections.swap(letters, loc, tempLoc);
 					Log.d(WordWaffle.DEBUG_TAG, "Placing in empty space");
 					break;
 				}
+				/*else if(usedTrayLocations[loc] == true && OverlapTester.pointInRectangle(letterTray.get(loc), l.position)){
+					int tempLoc = letters.indexOf(l);
+					Collections.swap(letters, loc, tempLoc);
+					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+					letters.get(loc).setLocation(letterTray.get(tempLoc).lowerLeft.x, letterTray.get(tempLoc).lowerLeft.y, -1, -1);
+					l.state = Letter.IN_TRAY;
+					usedTrayLocations[loc] = true;
+					usedTrayLocations[tempLoc] = true;
+					Log.d(WordWaffle.DEBUG_TAG, "Swapping spaces");
+					break;
+				} possible check for swapping tiles. This is getting called for each letter though?*/
 			}
 			else{ //user drags object off board
-				if (usedTrayLocations[loc] == false) break;
+				if (usedTrayLocations[loc] == false){
+					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+					l.state = Letter.IN_TRAY;
+					usedTrayLocations[loc] = true;
+					break;
+				}
 			}
-		}
-		l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
-		l.state = Letter.IN_TRAY;
-		usedTrayLocations[loc] = true;	
+		}	
 	}
 	
 	public boolean checkSlideLettersTray(TouchEvent event, Vector2 touchPoint) { 
