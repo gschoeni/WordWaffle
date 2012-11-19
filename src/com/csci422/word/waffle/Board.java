@@ -181,7 +181,7 @@ public class Board {
 			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
 			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(loc), l.position));
 			if(placeBack){ //user drags object to space
-				if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position)){
+				if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
 					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
 					l.state = Letter.IN_TRAY;
 					usedTrayLocations[loc] = true;
