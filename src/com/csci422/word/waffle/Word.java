@@ -8,7 +8,7 @@ import java.util.List;
 // it will be used to store this information and make sure 
 // words do not get counted twice
 
-public class Word {
+public class Word implements Comparable{
 
 	public String word;
 	public ArrayList<int[]> board_locations = new ArrayList<int[]>();
@@ -59,5 +59,11 @@ public class Word {
 	@Override
 	public String toString() {
 		return word;
+	}
+
+	@Override
+	public int compareTo(Object another) {
+		Word other = (Word) another;
+		return word.compareTo(other.word);
 	}
 }
