@@ -32,11 +32,12 @@ public class Board {
 	public static boolean[] usedTrayLocations = new boolean[NUM_LETTERS];
 	
 	// these are the touch bounds to slide the letter tray, so they are a bit bigger, ICEBERG
-	public static Rectangle slideLeftBounds = new Rectangle(0, 0, 60, 60);
+	public static Rectangle slideLeftBounds = new Rectangle(0, 0, 50, 60);
 	public static Rectangle slideRightBounds = new Rectangle(280, 0, 40, 60);
 	
-	public static int score;
-	private float timeLeft = 20.0f;
+	public static int base_score;
+	public static int[] final_score; // will hold all the components of the final score for to be accessed by GameRenderer
+	private float timeLeft = 40.0f;
 	public static String time;
 	
 	public static final int GAME_READY = 0;
@@ -350,7 +351,7 @@ public class Board {
 	}
 	
 	private void calculateScore() {
-		score = ScoreCalculator.calculateScore(valid_words, invalid_words);
+		base_score = ScoreCalculator.calculateBaseScore(valid_words, invalid_words);
 	}
 	
 	private void calcTimeLeft(float deltaTime) {
@@ -371,9 +372,13 @@ public class Board {
 		if (timeLeft <= 0) {
 			state = Board.GAME_OVER;
 			int numTilesLeft = 0;
-			for(boolean b : usedTrayLocations) if(b) numTilesLeft++;
-			score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
+			for (boolean b : usedTrayLocations) if (b) numTilesLeft++;
+			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
 		}
+	}
+	
+	public void resetBoard() {
+		
 	}
 
 }

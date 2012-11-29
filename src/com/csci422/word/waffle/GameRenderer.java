@@ -77,22 +77,7 @@ public class GameRenderer {
 			break;
 			
 			case Board.GAME_OVER:
-				
-				//draw total score
-				Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.score, 140, 342, 30, 30, 20);
-				
-				//Draw Long Word Bonus
-				Assets.whiteNumberRenderer.drawNumber(batcher, "+"+15, 170, 270, 15, 15, 10);
-				
-				//Draw Finishing Tray Points
-				Assets.whiteNumberRenderer.drawNumber(batcher, "+"+25, 180, 245, 15, 15, 10);
-				
-				//Duplicate Words Score
-				Assets.whiteNumberRenderer.drawNumber(batcher, "-"+3, 200, 175, 15, 15, 10);
-				
-				//Draw unused tile score
-				Assets.whiteNumberRenderer.drawNumber(batcher, "-"+10, 175, 145, 15, 15, 10);
-				
+				renderFinalScores();
 				break;
 		}
         
@@ -134,7 +119,7 @@ public class GameRenderer {
 	
 	private void renderScore() {
 		 Assets.letterRenderer.drawText(batcher, "SCORE", 10, 415, 20, 20, 15);
-		 Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.score, 95, 415, 20, 20, 15);
+		 Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.base_score, 95, 415, 20, 20, 15);
 	}
 	
 	private void renderTimer() {
@@ -143,7 +128,31 @@ public class GameRenderer {
 	}
 	
 	
-	// Used to check that the validBoardSquares line up with the waffle
+	private void renderFinalScores() {
+		//draw total score
+		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.base_score, 110, 325, 30, 30, 20);
+		
+		//Draw Long Word Bonus
+		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[1], 170, 270, 15, 15, 10);
+		
+		//Draw Finishing Tray Points
+		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[2], 180, 242, 15, 15, 10);
+		
+		//Repeated Words Score
+		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[3], 222, 215, 15, 15, 10);
+		
+		//Draw unused tile score
+		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[4], 175, 155, 15, 15, 10);
+		
+		//Draw invalid word score
+		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[5], 180, 125, 15, 15, 10);
+		
+		//draw final score
+		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[0], 140, 50, 40, 40, 25);
+		
+	}
+	
+	// Used to check any rectangles
 	private void renderDebugSquares() {
 //		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
 //			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {

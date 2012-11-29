@@ -53,6 +53,8 @@ public class GameScreen extends GLScreen {
 	        TouchEvent event = touchEvents.get(i);
 	        // the points returned are backward in openGL land so we need to convert them to our coordinate space
 	        touchPoint = touchPoint.getGLCoords(glGraphics, touchPoint, event.x, event.y, GameRenderer.FRUSTUM_WIDTH, GameRenderer.FRUSTUM_HEIGHT);
+	        
+	        
 	        if(board.checkSlideLettersTray(event, touchPoint)) {
 	        	// we are trying to slide the letters in the letters tray
 	        	break;
@@ -92,7 +94,6 @@ public class GameScreen extends GLScreen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 		
 	}
 
