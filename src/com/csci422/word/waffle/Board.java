@@ -304,9 +304,10 @@ public class Board {
 	}
 	
 	private void checkIfWordIsValid(String string_to_check, boolean isHorizontal) {
-		if (Dictionary.isValidWord(string_to_check)) {
+		//checks if in dictionary and tile is on star space
+		if (Dictionary.isValidWord(string_to_check) && letterLocations[3][3] != ' '){
 			valid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
-		} else if(string_to_check.length() > 1 && letter_chain.size() > 0) {
+		} else if(string_to_check.length() > 1 && letter_chain.size() > 0){
 			invalid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
 		}
 	}
@@ -369,6 +370,9 @@ public class Board {
 	private void checkGameOver() {
 		if (timeLeft <= 0) {
 			state = Board.GAME_OVER;
+			int numTilesLeft = 0;
+			for(boolean b : usedTrayLocations) if(b) numTilesLeft++;
+			score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
 		}
 	}
 

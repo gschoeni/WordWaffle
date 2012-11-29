@@ -66,4 +66,5 @@ public class Word implements Comparable{
 		Word other = (Word) another;
 		return word.compareTo(other.word);
 	}
+
 }
