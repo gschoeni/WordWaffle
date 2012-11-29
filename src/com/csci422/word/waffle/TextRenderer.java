@@ -49,7 +49,7 @@ public class TextRenderer {
     	int len = text.length();
         for(int i = 0; i < len; i++) {
         	//Log.d(WordWaffle.DEBUG_TAG, "char: "+text.charAt(i));
-            int c = text.charAt(i) - '0';
+            int c = text.charAt(i) - '+';
             
             if(c < 0 || c > glyphs.length - 1) 
                 continue;
@@ -59,7 +59,7 @@ public class TextRenderer {
             batcher.drawSprite(x, y, width, height, glyph);
             x += x_offset;
             
-            if (c == 10) { // if the "number" is a : then lets tighten it up
+            if (c == 15) { // if the character is a ':' then lets tighten it up
             	x -= x_offset / 2;
             }
         }

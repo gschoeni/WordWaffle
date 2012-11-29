@@ -20,7 +20,6 @@ public class ScoreCalculator {
 		15
 	};
 	
-	
 	// Suppress default constructor for noninstantiability
     private ScoreCalculator() {
         throw new AssertionError();

@@ -34,7 +34,7 @@ public class Assets {
         foregroundItems = new Texture(game, "game_sprites.png");
         letterRenderer = new TextRenderer(foregroundItems, 0, 40, 40, 40);
         blackNumberRenderer = new TextRenderer(foregroundItems, 0, 280, 40, 40);
-        whiteNumberRenderer = new TextRenderer(foregroundItems, 0, 400, 40, 40);
+        whiteNumberRenderer = new TextRenderer(foregroundItems, 0, 440, 40, 40);
          
         debugRect = new TextureRegion(foregroundItems, 40, 0, 40, 40);
         letter = new TextureRegion(foregroundItems, 0, 0, 40, 40);

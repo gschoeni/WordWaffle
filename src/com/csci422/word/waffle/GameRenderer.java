@@ -33,6 +33,10 @@ public class GameRenderer {
     }
 	
 	private void renderBackground() {
+		GL10 gl = glGraphics.getGL();
+		gl.glEnable(GL10.GL_BLEND);
+        
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		batcher.beginBatch(Assets.background);
 		switch (board.state) {
 			case Board.GAME_RUNNING:
@@ -43,6 +47,11 @@ public class GameRenderer {
 			break;
 			
 			case Board.GAME_OVER:
+				batcher.drawSprite(cam.position.x, cam.position.y,
+                        FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
+                        Assets.backgroundRegion);
+				
+				// Overlay the game over on the original background
 				batcher.drawSprite(cam.position.x, cam.position.y,
                         FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
                         Assets.gameOverScreen);
@@ -68,7 +77,22 @@ public class GameRenderer {
 			break;
 			
 			case Board.GAME_OVER:
-				Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.score, 140, 340, 30, 30, 20);
+				
+				//draw total score
+				Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.score, 140, 342, 30, 30, 20);
+				
+				//Draw Long Word Bonus
+				Assets.whiteNumberRenderer.drawNumber(batcher, "+"+15, 170, 270, 15, 15, 10);
+				
+				//Draw Finishing Tray Points
+				Assets.whiteNumberRenderer.drawNumber(batcher, "+"+25, 180, 245, 15, 15, 10);
+				
+				//Duplicate Words Score
+				Assets.whiteNumberRenderer.drawNumber(batcher, "-"+3, 200, 175, 15, 15, 10);
+				
+				//Draw unused tile score
+				Assets.whiteNumberRenderer.drawNumber(batcher, "-"+10, 175, 145, 15, 15, 10);
+				
 				break;
 		}
         
