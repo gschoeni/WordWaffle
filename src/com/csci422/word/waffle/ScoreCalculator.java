@@ -33,9 +33,9 @@ public class ScoreCalculator {
     	}
     	return score;
     }
-    
-    public static int calculateScoreEnd(Set<Word> valid_words, Set<Word> invalid_words, int tilesRemaining) {
-    	int score = calculateScore(valid_words, invalid_words);
+
+	public static int calculateScoreEnd(Set<Word> valid_words, Set<Word> invalid_words, int tilesRemaining) {
+		int score = calculateScore(valid_words, invalid_words);
     	
     	Vector<Word> sortedWords = new Vector<Word>();
     	sortedWords.addAll(valid_words);
@@ -50,15 +50,15 @@ public class ScoreCalculator {
     		}
     		if(sortedWords.get(i).word.length() <= 3) shortWords++;
     	}
-    	if(sortedWords.get(sortedWords.size() - 1).word.length() <= 3) shortWords++;
+    	if(sortedWords.size() > 0 && sortedWords.get(sortedWords.size() - 1).word.length() <= 3) shortWords++;
     	
-    	if(sortedWords.size() / shortWords > 2) score += 25; //bonus for 50% long words (>3)
+    	if(shortWords == 0 || sortedWords.size() / shortWords > 2) score += 25; //bonus for 50% long words (>3)
     	if(original) score += 15; //+15 for no repeated words
     	
     	if(tilesRemaining == 0) score += 25; //+25 for finishing tray
     	else score -= (tilesRemaining * 3); //penalized for leftoverTiles
     	
     	return score;
-    }
+	}
 
 }
