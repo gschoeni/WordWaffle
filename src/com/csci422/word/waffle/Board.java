@@ -36,7 +36,7 @@ public class Board {
 	public static Rectangle slideRightBounds = new Rectangle(280, 0, 40, 60);
 	
 	public static int score;
-	private float timeLeft = 120.0f;
+	private float timeLeft = 20.0f;
 	public static String time;
 	
 	public static final int GAME_READY = 0;

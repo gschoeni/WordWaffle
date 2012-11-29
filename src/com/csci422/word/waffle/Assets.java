@@ -8,10 +8,12 @@ public class Assets {
 	
 	public static Texture background;
     public static TextureRegion backgroundRegion;
+    public static TextureRegion gameOverScreen;
     
     public static Texture foregroundItems;
     public static TextRenderer letterRenderer;
-    public static TextRenderer numberRenderer;
+    public static TextRenderer blackNumberRenderer;
+    public static TextRenderer whiteNumberRenderer;
     public static TextureRegion debugRect;
     public static TextureRegion letter;
     public static TextureRegion valid_letter;
@@ -27,11 +29,12 @@ public class Assets {
     public static void load(GLGame game) {
     	background = new Texture(game, "waffle.png");
         backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
+        gameOverScreen = new TextureRegion(background, 320, 0, 320, 480);
         
         foregroundItems = new Texture(game, "game_sprites.png");
         letterRenderer = new TextRenderer(foregroundItems, 0, 40, 40, 40);
-        numberRenderer = new TextRenderer(foregroundItems, 0, 280, 40, 40);
-        
+        blackNumberRenderer = new TextRenderer(foregroundItems, 0, 280, 40, 40);
+        whiteNumberRenderer = new TextRenderer(foregroundItems, 0, 400, 40, 40);
          
         debugRect = new TextureRegion(foregroundItems, 40, 0, 40, 40);
         letter = new TextureRegion(foregroundItems, 0, 0, 40, 40);

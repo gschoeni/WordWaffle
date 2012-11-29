@@ -2,6 +2,9 @@ package com.csci422.word.waffle;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.util.Log;
+
+import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.gl.Camera2D;
 import com.badlogic.androidgames.framework.gl.SpriteBatcher;
 import com.badlogic.androidgames.framework.impl.GLGraphics;
@@ -31,23 +34,45 @@ public class GameRenderer {
 	
 	private void renderBackground() {
 		batcher.beginBatch(Assets.background);
-        batcher.drawSprite(cam.position.x, cam.position.y,
-                           FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
-                           Assets.backgroundRegion);
-        batcher.endBatch();
+		switch (board.state) {
+			case Board.GAME_RUNNING:
+				
+				batcher.drawSprite(cam.position.x, cam.position.y,
+                        FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
+                        Assets.backgroundRegion);
+			break;
+			
+			case Board.GAME_OVER:
+				batcher.drawSprite(cam.position.x, cam.position.y,
+                        FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
+                        Assets.gameOverScreen);
+				break;
+		}
+		batcher.endBatch();
 	}
 	
 	private void renderForeground() {
 		GL10 gl = glGraphics.getGL();
         gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         batcher.beginBatch(Assets.foregroundItems);
-        renderDebugSquares();
-        renderScore();
-        renderTimer();
-        renderLetters();
-        renderLetterTray();
+        
+        switch (board.state) {
+			case Board.GAME_RUNNING:
+				renderDebugSquares();
+		        renderScore();
+		        renderTimer();
+		        renderLetters();
+		        renderLetterTray();
+			break;
+			
+			case Board.GAME_OVER:
+				Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.score, 140, 340, 30, 30, 20);
+				break;
+		}
+        
+        
         
         batcher.endBatch();
         gl.glDisable(GL10.GL_BLEND);
@@ -85,12 +110,12 @@ public class GameRenderer {
 	
 	private void renderScore() {
 		 Assets.letterRenderer.drawText(batcher, "SCORE", 10, 415, 20, 20, 15);
-		 Assets.numberRenderer.drawNumber(batcher, ""+Board.score, 95, 415, 20, 20, 15);
+		 Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.score, 95, 415, 20, 20, 15);
 	}
 	
 	private void renderTimer() {
 		Assets.letterRenderer.drawText(batcher, "TIME", 200, 415, 20, 20, 15);
-		Assets.numberRenderer.drawNumber(batcher, Board.time, 265, 415, 20, 20, 15);
+		Assets.blackNumberRenderer.drawNumber(batcher, Board.time, 265, 415, 20, 20, 15);
 	}
 	
 	

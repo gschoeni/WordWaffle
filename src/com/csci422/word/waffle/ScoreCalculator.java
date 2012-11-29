@@ -45,18 +45,18 @@ public class ScoreCalculator {
     	int shortWords = 0;
     	for(int i = 0; i < sortedWords.size() - 1; i++){
     		if(sortedWords.get(i).compareTo(sortedWords.get(i+1)) == 0){
-    			score -= 5; //penalized for repeated words
+    			score -= 5; // penalized for repeated words
     			original = false;
     		}
     		if(sortedWords.get(i).word.length() <= 3) shortWords++;
     	}
     	if(sortedWords.get(sortedWords.size() - 1).word.length() <= 3) shortWords++;
     	
-    	if(sortedWords.size() / shortWords > 2) score += 25; //bonus for 50% long words (>3)
-    	if(original) score += 15; //+15 for no repeated words
+    	if(sortedWords.size() / shortWords > 2) score += 25; // bonus for 50% long words (>3)
+    	if(original) score += 15; // +15 for no repeated words
     	
-    	if(tilesRemaining == 0) score += 25; //+25 for finishing tray
-    	else score -= (tilesRemaining * 3); //penalized for leftoverTiles
+    	if(tilesRemaining == 0) score += 50; // +25 for finishing tray
+    	else score -= (tilesRemaining * 3); // penalized for leftoverTiles
     	
     	return score;
     }

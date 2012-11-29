@@ -34,13 +34,12 @@ public class GameScreen extends GLScreen {
 
 	@Override
 	public void update(float deltaTime) {
-		
 		switch (board.state) {
 			case Board.GAME_RUNNING:
 				updateRunning(deltaTime);
 				break;
 			case Board.GAME_OVER:
-				gameOver();
+				showGameOver(deltaTime);
 				break;
 			default:
 
@@ -64,7 +63,11 @@ public class GameScreen extends GLScreen {
 		board.update(deltaTime);
 	}
 	
-	private void gameOver() {
+	private void showGameOver(float deltaTime) {
+		
+	}
+	
+	private void finishActivity() {
 		glGame.finish();
 	}
 
