@@ -19,25 +19,11 @@ public class Board {
 	public static final float WORLD_HEIGHT = 480;
 	public static final int BOARD_WIDTH = 7;
 	public static final int BOARD_HEIGHT = 7;
-	private char[][] letterLocations = new char[BOARD_WIDTH][BOARD_HEIGHT];
-	public static Rectangle[][] validBoardSpaces = new Rectangle[BOARD_WIDTH][BOARD_HEIGHT];
-	//public static Letter[][] letters = new Letter[BOARD_WIDTH][BOARD_HEIGHT];
-	public static List<Letter> letters = new ArrayList<Letter>();
-	public static Set<Word> valid_words = new HashSet<Word>();
-	public static Set<Word> invalid_words = new HashSet<Word>();
-	public static ArrayList<int[]> letter_chain = new ArrayList<int[]>();
-	
 	public static final int NUM_LETTERS = 20;
-	public static List<Rectangle> letterTray = new ArrayList<Rectangle>();
-	public static boolean[] usedTrayLocations = new boolean[NUM_LETTERS];
-	
-	// these are the touch bounds to slide the letter tray, so they are a bit bigger, ICEBERG
-	public static Rectangle slideLeftBounds = new Rectangle(0, 0, 50, 60);
-	public static Rectangle slideRightBounds = new Rectangle(280, 0, 40, 60);
+	private float timeLeft = 120.0f;
 	
 	public static int base_score;
 	public static int[] final_score; // will hold all the components of the final score for to be accessed by GameRenderer
-	private float timeLeft = 120.0f;
 	public static String time;
 	
 	public static final int GAME_READY = 0;
@@ -45,12 +31,41 @@ public class Board {
 	public static final int GAME_PAUSED = 2;
 	public static final int GAME_OVER = 3;
 	
+	private char[][] letterLocations;
+	public static Rectangle[][] validBoardSpaces;
+	public static List<Letter> letters;
+	public static Set<Word> valid_words;
+	public static Set<Word> invalid_words;
+	public static ArrayList<int[]> letter_chain;
+	public static List<Rectangle> letterTray;
+	public static boolean[] usedTrayLocations;
+	
+	public static Rectangle slideLeftBounds;
+	public static Rectangle slideRightBounds;
+	
+
+	
 	public int state;
 	
 	public Board() {
 		state = Board.GAME_RUNNING;
+		initDataStructures();
 		initBoardSpaces();
 		initLetters();
+		base_score = 0;
+	}
+	
+	private void initDataStructures() {
+		letterLocations = new char[BOARD_WIDTH][BOARD_HEIGHT];
+		validBoardSpaces = new Rectangle[BOARD_WIDTH][BOARD_HEIGHT];
+		letters = new ArrayList<Letter>();
+		valid_words = new HashSet<Word>();
+		invalid_words = new HashSet<Word>();
+		letter_chain = new ArrayList<int[]>();
+		letterTray = new ArrayList<Rectangle>();
+		usedTrayLocations = new boolean[NUM_LETTERS];
+		slideLeftBounds = new Rectangle(0, 0, 50, 60);
+		slideRightBounds = new Rectangle(280, 0, 40, 60);
 	}
 	
 	private void initBoardSpaces() {
@@ -375,10 +390,6 @@ public class Board {
 			for (boolean b : usedTrayLocations) if (b) numTilesLeft++;
 			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
 		}
-	}
-	
-	public void resetBoard() {
-		
 	}
 
 }

@@ -21,6 +21,7 @@ public class GameScreen extends GLScreen {
 	private Vector2 touchPoint;
 	private Rectangle pauseRect;
 	private Rectangle resumeRect;
+	private Rectangle quitRect;
 	
 	
 	public GameScreen(WordWaffle game) {
@@ -32,6 +33,7 @@ public class GameScreen extends GLScreen {
 		touchPoint = new Vector2();
 		pauseRect = new Rectangle(280, 440, 40, 40);
 		resumeRect = new Rectangle(40, 280, 240, 40);
+		quitRect = new Rectangle(40, 220, 240, 40);
 	}
 
 	@Override
@@ -73,6 +75,7 @@ public class GameScreen extends GLScreen {
 	        // the points returned are backward in openGL land so we need to convert them to our coordinate space
 	        touchPoint = touchPoint.getGLCoords(glGraphics, touchPoint, event.x, event.y, GameRenderer.FRUSTUM_WIDTH, GameRenderer.FRUSTUM_HEIGHT);
 	        checkTappedResume(event, touchPoint);
+	        checkTappedQuit(event, touchPoint);
 	    }
 	}
 	
@@ -95,6 +98,13 @@ public class GameScreen extends GLScreen {
 		if(event.type != TouchEvent.TOUCH_DOWN) return;
 		if (OverlapTester.pointInRectangle(resumeRect, touchPoint)) {
 			board.state = Board.GAME_RUNNING;
+		}
+	}
+	
+	private void checkTappedQuit(TouchEvent event, Vector2 touchPoint) {
+		if(event.type != TouchEvent.TOUCH_DOWN) return;
+		if (OverlapTester.pointInRectangle(quitRect, touchPoint)) {
+			finishActivity();
 		}
 	}
 
