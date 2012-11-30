@@ -106,7 +106,8 @@ public class Board {
 	        	l.state = Letter.IS_BEING_DRAGGED;
 	        	usedTrayLocations[letters.indexOf(l)] = false;
 	        	//Log.d(WordWaffle.DEBUG_TAG, "Index set to false -- " + letters.indexOf(l));
-	        	for(int i = 0; i < NUM_LETTERS; i++)       		
+	        	//Log.d(WordWaffle.DEBUG_TAG, "LETTER PICKED UP, Letter: "+l.value);
+				//for(int i = 0; i < NUM_LETTERS; i++)       		
 	        		//Log.d(WordWaffle.DEBUG_TAG, "Tray " + i + ": " + usedTrayLocations[i]);
 	        	
 	        	// if this piece is in a valid board location it has now been picked up
@@ -137,12 +138,16 @@ public class Board {
 					l.setLocation(r.lowerLeft.x, r.lowerLeft.y, i, j);
 					letterLocations[i][j] = l.value;
 					l.state = Letter.INVALID_LOCATION;
+					break;
 				} else if(overLappingRect) {
-					placeLetterInClosestValidLocation(i, j, l);
+					placeLetterInClosestValidBoardLocation(i, j, l);
+					break;
 				} else if (outsideWaffleTop(l)) {
 					placeLetterInTraySpace(l, false);
+					break;
 				} else if (outsideWaffleBottom(l)) {
 					placeLetterInTraySpace(l, true);
+					break;
 				}
 			}
 		}
@@ -151,7 +156,7 @@ public class Board {
 	// This method assumes the player tried to put a letter in a space that is already taken
 	// So it checks if top, right, bottom, or left are taken, and places the square in the first position  
 	// that is not taken
-	private void placeLetterInClosestValidLocation(int row, int col, Letter l) {
+	private void placeLetterInClosestValidBoardLocation(int row, int col, Letter l) {
 		// will be placed on board or it's state will be set to back in tray below
 		l.state = Letter.INVALID_LOCATION;
 		
@@ -177,7 +182,7 @@ public class Board {
 		} 
 		// put back in letter tray
 		else {
-			placeLetterInTraySpace(l,false);
+			placeLetterInTraySpace(l, false);
 		}
 		
 	}
@@ -193,11 +198,23 @@ public class Board {
 	//This method places in tray space if it is empty
 	private void placeLetterInTraySpace(Letter l, boolean placeBack) {
 		int loc;
+		
 		for (loc = 0; loc < NUM_LETTERS; loc++){
 			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
 			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(loc), l.position));
 			if(placeBack){ //user drags object to space
-				if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
+				if(usedTrayLocations[loc] == true && OverlapTester.pointInRectangle(letterTray.get(loc), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
+					int tempLoc = letters.indexOf(l);
+					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+					l.state = Letter.IN_TRAY;
+					letters.get(loc).setLocation(letterTray.get(tempLoc).lowerLeft.x, letterTray.get(tempLoc).lowerLeft.y, -1, -1);
+					usedTrayLocations[loc] = true;
+					usedTrayLocations[tempLoc] = true;
+					// We were swapping too early, swap the underlying data structure position at the end
+					Collections.swap(letters, loc, tempLoc);
+					break;
+				}
+				else if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
 					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
 					l.state = Letter.IN_TRAY;
 					usedTrayLocations[loc] = true;
@@ -206,17 +223,6 @@ public class Board {
 					Log.d(WordWaffle.DEBUG_TAG, "Placing in empty space");
 					break;
 				}
-				/*else if(usedTrayLocations[loc] == true && OverlapTester.pointInRectangle(letterTray.get(loc), l.position)){
-					int tempLoc = letters.indexOf(l);
-					Collections.swap(letters, loc, tempLoc);
-					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
-					letters.get(loc).setLocation(letterTray.get(tempLoc).lowerLeft.x, letterTray.get(tempLoc).lowerLeft.y, -1, -1);
-					l.state = Letter.IN_TRAY;
-					usedTrayLocations[loc] = true;
-					usedTrayLocations[tempLoc] = true;
-					Log.d(WordWaffle.DEBUG_TAG, "Swapping spaces");
-					break;
-				} possible check for swapping tiles. This is getting called for each letter though?*/
 			}
 			else{ //user drags object off board
 				if (usedTrayLocations[loc] == false){
