@@ -1,19 +1,27 @@
 package com.csci422.word.waffle;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.math.OverlapTester;
 import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
 
-public class Board {
+public class Board{
 	
 	public static final float WORLD_WIDTH = 320;
 	public static final float WORLD_HEIGHT = 480;
@@ -42,8 +50,6 @@ public class Board {
 	
 	public static Rectangle slideLeftBounds;
 	public static Rectangle slideRightBounds;
-	
-
 	
 	public int state;
 	
@@ -395,7 +401,14 @@ public class Board {
 			int numTilesLeft = 0;
 			for (boolean b : usedTrayLocations) if (b) numTilesLeft++;
 			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
+			
+			int[] tester = {final_score[0]};
+			MainMenu.saveHighScores(tester);
+			
+			int[] t = MainMenu.getHighScores();
+			Log.d(WordWaffle.DEBUG_TAG, "You scored a "+t[0]);
 		}
 	}
+	
 
 }
