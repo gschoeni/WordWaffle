@@ -109,8 +109,8 @@ public class ScoreCalculator {
     		score[3] += 15;
     	}
     	
-    	if(tilesRemaining == 0) {
-    		score[0] += 50; // +25 for finishing tray
+    	if(tilesRemaining == 0 && invalid_words.isEmpty()) {
+    		score[0] += 50; // for finishing tray
     		score[2] += 50;
     	}
     	else {
