@@ -37,7 +37,7 @@ public class Board {
 	
 	public static int base_score;
 	public static int[] final_score; // will hold all the components of the final score for to be accessed by GameRenderer
-	private float timeLeft = 40.0f;
+	private float timeLeft = 120.0f;
 	public static String time;
 	
 	public static final int GAME_READY = 0;

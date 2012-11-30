@@ -46,6 +46,13 @@ public class GameRenderer {
                         Assets.backgroundRegion);
 			break;
 			
+			case Board.GAME_PAUSED:
+				
+				batcher.drawSprite(cam.position.x, cam.position.y,
+                        FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
+                        Assets.backgroundRegion);
+			break;
+			
 			case Board.GAME_OVER:
 				batcher.drawSprite(cam.position.x, cam.position.y,
                         FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
@@ -74,6 +81,15 @@ public class GameRenderer {
 		        renderTimer();
 		        renderLetters();
 		        renderLetterTray();
+			break;
+			
+			case Board.GAME_PAUSED:
+				renderDebugSquares();
+		        renderScore();
+		        renderTimer();
+		        renderLetters();
+		        renderLetterTray();
+		        renderPausedScreen();
 			break;
 			
 			case Board.GAME_OVER:
@@ -150,6 +166,10 @@ public class GameRenderer {
 		//draw final score
 		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[0], 140, 50, 40, 40, 25);
 		
+	}
+	
+	private void renderPausedScreen() {
+		batcher.drawSprite(160, 280, 220, 220, Assets.pauseScreen);
 	}
 	
 	// Used to check any rectangles

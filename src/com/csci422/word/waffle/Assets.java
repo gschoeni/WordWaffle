@@ -20,6 +20,7 @@ public class Assets {
     public static TextureRegion invalid_letter;
     public static TextureRegion leftArrow;
     public static TextureRegion rightArrow;
+    public static TextureRegion pauseScreen;
     
     // Suppress default constructor for noninstantiability
     private Assets() {
@@ -42,7 +43,7 @@ public class Assets {
         invalid_letter = new TextureRegion(foregroundItems, 200, 0, 40, 40);
         leftArrow = new TextureRegion(foregroundItems, 80, 0, 40, 40);
         rightArrow = new TextureRegion(foregroundItems, 120, 0, 40, 40);
-        
+        pauseScreen = new TextureRegion(foregroundItems, 200, 40, 160, 160);
         
     }
     
