@@ -1,20 +1,12 @@
 package com.csci422.word.waffle;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.math.OverlapTester;
@@ -402,12 +394,22 @@ public class Board{
 			for (boolean b : usedTrayLocations) if (b) numTilesLeft++;
 			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
 			
-			int[] tester = {final_score[0]};
-			MainMenu.saveHighScores(tester);
+			//looks at final score and places top 5 high scores in memory
+			List<Integer> allScores = new ArrayList<Integer>();
+			for(int i : MainMenu.getHighScores()) allScores.add(i); //adds previous scores to list
+			allScores.add(final_score[0]); //adds new score to list
+			Collections.sort(allScores); //sort in ascending order
+			if(allScores.size() > 5) allScores.remove(0); //removes smallest score if over number limit
 			
+			int[] newScores = new int[allScores.size()];
+			for(int a = 0; a < newScores.length; a++) newScores[a] = allScores.get(a);
+			MainMenu.saveHighScores(newScores);
+			
+			//for testing only
 			int[] t = MainMenu.getHighScores();
-			Log.d(WordWaffle.DEBUG_TAG, "You scored a "+t[0]);
+			Log.d(WordWaffle.DEBUG_TAG, "Your high score is "+t[t.length - 1]);
 		}
+		else return;
 	}
 	
 
