@@ -181,8 +181,8 @@ public class GameRenderer {
 //			}
 //                       
 //        }
-		for (Rectangle r : Board.letterTray) {
-			batcher.drawSprite(r.lowerLeft.x, r.lowerLeft.y, r.width, r.height, Assets.debugRect); 
+		for (TraySpace t : Board.letterTray) {
+			batcher.drawSprite(t.getRect().lowerLeft.x, t.getRect().lowerLeft.y, t.getRect().width, t.getRect().height, Assets.debugRect); 
 		}
 	}
 

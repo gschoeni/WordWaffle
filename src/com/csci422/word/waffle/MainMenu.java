@@ -70,6 +70,8 @@ public class MainMenu extends Activity {
 	        e.printStackTrace();
 	    } catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} finally {
+			if (scores == null) scores = new int[1];
 		}
 	    return scores;
 	}

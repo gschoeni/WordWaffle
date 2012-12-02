@@ -20,7 +20,7 @@ public class Board{
 	public static final int BOARD_WIDTH = 7;
 	public static final int BOARD_HEIGHT = 7;
 	public static final int NUM_LETTERS = 20;
-	private float timeLeft = 45.0f;
+	private float timeLeft = 15.0f;
 	
 	public static int base_score;
 	public static int[] final_score; // will hold all the components of the final score for to be accessed by GameRenderer
@@ -37,8 +37,8 @@ public class Board{
 	public static Set<Word> valid_words;
 	public static Set<Word> invalid_words;
 	public static ArrayList<int[]> letter_chain;
-	public static List<Rectangle> letterTray;
-	public static boolean[] usedTrayLocations;
+	
+	public static List<TraySpace> letterTray;
 	
 	public static Rectangle slideLeftBounds;
 	public static Rectangle slideRightBounds;
@@ -60,8 +60,7 @@ public class Board{
 		valid_words = new HashSet<Word>();
 		invalid_words = new HashSet<Word>();
 		letter_chain = new ArrayList<int[]>();
-		letterTray = new ArrayList<Rectangle>();
-		usedTrayLocations = new boolean[NUM_LETTERS];
+		letterTray = new ArrayList<TraySpace>();
 		slideLeftBounds = new Rectangle(0, 0, 50, 60);
 		slideRightBounds = new Rectangle(280, 0, 40, 60);
 	}
@@ -87,8 +86,8 @@ public class Board{
 			Log.d(WordWaffle.DEBUG_TAG, "New letter: "+l.value);
 			letters.add(l);
 			
-			letterTray.add(new Rectangle(x_offset + i*(Letter.WIDTH+padding), y_offset, Letter.WIDTH, Letter.HEIGHT));
-			usedTrayLocations[i] = true;
+			letterTray.add(new TraySpace(x_offset + i*(Letter.WIDTH+padding), y_offset, Letter.WIDTH, Letter.HEIGHT));
+
 		}
 	}
 	
@@ -102,7 +101,7 @@ public class Board{
 			// letter was tapped, will move if it is being dragged
 			if (event.type == TouchEvent.TOUCH_DOWN && OverlapTester.pointInRectangle(l.bounds, touchPoint)) {
 	        	l.state = Letter.IS_BEING_DRAGGED;
-	        	usedTrayLocations[letters.indexOf(l)] = false;
+	        	letterTray.get(letters.indexOf(l)).setUsed(false);
 	        	//Log.d(WordWaffle.DEBUG_TAG, "Index set to false -- " + letters.indexOf(l));
 	        	//Log.d(WordWaffle.DEBUG_TAG, "LETTER PICKED UP, Letter: "+l.value);
 				//for(int i = 0; i < NUM_LETTERS; i++)       		
@@ -201,21 +200,21 @@ public class Board{
 			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
 			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(loc), l.position));
 			if(placeBack){ //user drags object to space
-				if(usedTrayLocations[loc] == true && OverlapTester.pointInRectangle(letterTray.get(loc), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
+				if(letterTray.get(loc).isUsed() && OverlapTester.pointInRectangle(letterTray.get(loc).getRect(), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
 					int tempLoc = letters.indexOf(l);
-					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+					l.setLocation(letterTray.get(loc).getRect().lowerLeft.x, letterTray.get(loc).getRect().lowerLeft.y, -1, -1);
 					l.state = Letter.IN_TRAY;
-					letters.get(loc).setLocation(letterTray.get(tempLoc).lowerLeft.x, letterTray.get(tempLoc).lowerLeft.y, -1, -1);
-					usedTrayLocations[loc] = true;
-					usedTrayLocations[tempLoc] = true;
+					letters.get(loc).setLocation(letterTray.get(tempLoc).getRect().lowerLeft.x, letterTray.get(tempLoc).getRect().lowerLeft.y, -1, -1);
+					letterTray.get(loc).setUsed(true);
+					letterTray.get(tempLoc).setUsed(true);
 					// We were swapping too early, swap the underlying data structure position at the end
 					Collections.swap(letters, loc, tempLoc);
 					break;
 				}
-				else if (usedTrayLocations[loc] == false && OverlapTester.pointInRectangle(letterTray.get(loc), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
-					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+				else if (letterTray.get(loc).isEmpty() && OverlapTester.pointInRectangle(letterTray.get(loc).getRect(), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
+					l.setLocation(letterTray.get(loc).getRect().lowerLeft.x, letterTray.get(loc).getRect().lowerLeft.y, -1, -1);
 					l.state = Letter.IN_TRAY;
-					usedTrayLocations[loc] = true;
+					letterTray.get(loc).setUsed(true);
 					int tempLoc = letters.indexOf(l);
 					Collections.swap(letters, loc, tempLoc);
 					Log.d(WordWaffle.DEBUG_TAG, "Placing in empty space");
@@ -223,10 +222,10 @@ public class Board{
 				}
 			}
 			else{ //user drags object off board
-				if (usedTrayLocations[loc] == false){
-					l.setLocation(letterTray.get(loc).lowerLeft.x, letterTray.get(loc).lowerLeft.y, -1, -1);
+				if (letterTray.get(loc).isEmpty()){
+					l.setLocation(letterTray.get(loc).getRect().lowerLeft.x, letterTray.get(loc).getRect().lowerLeft.y, -1, -1);
 					l.state = Letter.IN_TRAY;
-					usedTrayLocations[loc] = true;
+					letterTray.get(loc).setUsed(true);
 					break;
 				}
 			}
@@ -249,11 +248,11 @@ public class Board{
 		Log.d(WordWaffle.DEBUG_TAG, "Slide");
 		int how_much = 50*direction;
 		// dont let it slide too far..
-		if (letterTray.get(0).lowerLeft.x + how_much > 100 || letterTray.get(letterTray.size() - 1).lowerLeft.x + how_much < 240)
+		if (letterTray.get(0).getRect().lowerLeft.x + how_much > 100 || letterTray.get(letterTray.size() - 1).getRect().lowerLeft.x + how_much < 240)
 			return;
 		for (int i = 0; i < NUM_LETTERS; i++) {
 			Letter l = letters.get(i);
-			Rectangle r = letterTray.get(i);
+			Rectangle r = letterTray.get(i).getRect();
 			r.lowerLeft.x += how_much;
 			if (l.state != Letter.IN_TRAY) // only move the letters in the tray
 				continue;
@@ -391,12 +390,13 @@ public class Board{
 		if (timeLeft <= 0) {
 			state = Board.GAME_OVER;
 			int numTilesLeft = 0;
-			for (boolean b : usedTrayLocations) if (b) numTilesLeft++;
+			for (TraySpace t : letterTray) if (t.isUsed()) numTilesLeft++;
 			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
 			
 			//looks at final score and places top 5 high scores in memory
 			List<Integer> allScores = new ArrayList<Integer>();
-			for(int i : MainMenu.getHighScores()) allScores.add(i); //adds previous scores to list
+			for(int i : MainMenu.getHighScores()) 
+				allScores.add(i); //adds previous scores to list
 			allScores.add(final_score[0]); //adds new score to list
 			Collections.sort(allScores); //sort in ascending order
 			if(allScores.size() > 5) allScores.remove(0); //removes smallest score if over number limit
