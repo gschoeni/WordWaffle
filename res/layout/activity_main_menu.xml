@@ -3,12 +3,139 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/buttonOne"
-    	android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:text="@string/play_button"
-    	android:onClick="startGame"
-    	android:layout_marginTop="5dp" />
-
+    	android:orientation="vertical">
+    	
+	    <Button
+	        android:id="@+id/buttonOne"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:text="@string/play_button"
+	    	android:onClick="startGame"
+	    	android:layout_marginTop="5dp" />
+	    <Button
+	        android:id="@+id/buttonTwo"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:text="@string/rules_button"
+	    	android:onClick="showRules"
+	    	android:layout_marginTop="5dp" />
+	    <TextView
+	        android:id="@+id/highscoreLabel"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/high_score_label"
+	        android:textStyle="bold"
+	        android:textSize="15pt"
+	        android:gravity="center"
+	        android:layout_marginTop="100dp" />
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="horizontal"
+	    	android:layout_marginTop="5dp"
+	    	android:weightSum="2">
+	    	<TextView
+		        android:id="@+id/labelOne"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/number_one"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    	<TextView
+		        android:id="@+id/highscoreOne"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/high_score_one"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="horizontal"
+	    	android:layout_marginTop="5dp"
+	    	android:weightSum="2">
+	    	<TextView
+		        android:id="@+id/labelTwo"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/number_two"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    	<TextView
+		        android:id="@+id/highscoreTwo"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/high_score_two"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="horizontal"
+	    	android:layout_marginTop="5dp"
+	    	android:weightSum="2">
+	    	<TextView
+		        android:id="@+id/labelThree"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/number_three"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    	<TextView
+		        android:id="@+id/highscoreThree"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/high_score_three"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="horizontal"
+	    	android:layout_marginTop="5dp"
+	    	android:weightSum="2">
+	    	<TextView
+		        android:id="@+id/labelFour"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/number_four"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    	<TextView
+		        android:id="@+id/highscoreFour"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/high_score_four"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="horizontal"
+	    	android:layout_marginTop="5dp"
+	    	android:weightSum="2">
+	    	<TextView
+		        android:id="@+id/labelFive"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/number_five"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    	<TextView
+		        android:id="@+id/highscoreFive"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		        android:text ="@string/high_score_five"
+		        android:layout_weight="1"
+		        android:gravity="center" />
+	    </LinearLayout>
+	   
+	</LinearLayout>
 </RelativeLayout>

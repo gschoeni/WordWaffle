@@ -20,7 +20,7 @@ public class Board{
 	public static final int BOARD_WIDTH = 7;
 	public static final int BOARD_HEIGHT = 7;
 	public static final int NUM_LETTERS = 20;
-	private float timeLeft = 120.0f;
+	private float timeLeft = 45.0f;
 	
 	public static int base_score;
 	public static int[] final_score; // will hold all the components of the final score for to be accessed by GameRenderer
@@ -404,10 +404,7 @@ public class Board{
 			int[] newScores = new int[allScores.size()];
 			for(int a = 0; a < newScores.length; a++) newScores[a] = allScores.get(a);
 			MainMenu.saveHighScores(newScores);
-			
-			//for testing only
-			int[] t = MainMenu.getHighScores();
-			Log.d(WordWaffle.DEBUG_TAG, "Your high score is "+t[t.length - 1]);
+			//MainMenu.updateScores();
 		}
 		else return;
 	}

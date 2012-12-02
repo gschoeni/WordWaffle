@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainMenu extends Activity {
 
@@ -32,10 +33,12 @@ public class MainMenu extends Activity {
         return true;
     }
     
-    public void startGame(View view) {
+    public void startGame(View view) {        
     	Intent i = new Intent(this, WordWaffle.class);
     	startActivity(i);
     }
+    
+    public void showRules(View view) {}
     
     public static void saveHighScores(int[] scores) {
 	    FileOutputStream fos;
@@ -70,5 +73,21 @@ public class MainMenu extends Activity {
 		}
 	    return scores;
 	}
+
+	/*
+	 * Algorithm for changing text in TextViews, need to impliment elsewhere
+	 * 
+	private int[] viewIds = {R.id.highscoreFive , R.id.highscoreFour,
+			R.id.highscoreThree, R.id.highscoreTwo, R.id.highscoreOne};
+	private static TextView[] views;
+	views = new TextView[viewIds.length];
+        for(int i = 0; i < viewIds.length; i++) views[i] = (TextView) findViewById(viewIds[i]);
+	public static void updateScores() {
+		int[] scores = getHighScores();
+		for(int i = scores.length-1; i >= 0; i--){
+			TextView temp = views[i];
+			temp.setText(String.valueOf(scores[i]));
+		}
+	}*/
     
 }
