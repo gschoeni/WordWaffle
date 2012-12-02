@@ -13,14 +13,14 @@ import com.badlogic.androidgames.framework.math.OverlapTester;
 import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
 
-public class Board {
+public class Board{
 	
 	public static final float WORLD_WIDTH = 320;
 	public static final float WORLD_HEIGHT = 480;
 	public static final int BOARD_WIDTH = 7;
 	public static final int BOARD_HEIGHT = 7;
 	public static final int NUM_LETTERS = 20;
-	private float timeLeft = 120.0f;
+	private float timeLeft = 45.0f;
 	
 	public static int base_score;
 	public static int[] final_score; // will hold all the components of the final score for to be accessed by GameRenderer
@@ -42,8 +42,6 @@ public class Board {
 	
 	public static Rectangle slideLeftBounds;
 	public static Rectangle slideRightBounds;
-	
-
 	
 	public int state;
 	
@@ -395,7 +393,21 @@ public class Board {
 			int numTilesLeft = 0;
 			for (boolean b : usedTrayLocations) if (b) numTilesLeft++;
 			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft);
+			
+			//looks at final score and places top 5 high scores in memory
+			List<Integer> allScores = new ArrayList<Integer>();
+			for(int i : MainMenu.getHighScores()) allScores.add(i); //adds previous scores to list
+			allScores.add(final_score[0]); //adds new score to list
+			Collections.sort(allScores); //sort in ascending order
+			if(allScores.size() > 5) allScores.remove(0); //removes smallest score if over number limit
+			
+			int[] newScores = new int[allScores.size()];
+			for(int a = 0; a < newScores.length; a++) newScores[a] = allScores.get(a);
+			MainMenu.saveHighScores(newScores);
+			//MainMenu.updateScores();
 		}
+		else return;
 	}
+	
 
 }
