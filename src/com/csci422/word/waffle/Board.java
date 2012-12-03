@@ -20,7 +20,7 @@ public class Board{
 	public static final int BOARD_WIDTH = 7;
 	public static final int BOARD_HEIGHT = 7;
 	public static final int NUM_LETTERS = 20;
-	private float timeLeft = 15.0f;
+	private float timeLeft = 20.0f;
 	
 	public static int base_score;
 	public static int[] final_score; // will hold all the components of the final score for to be accessed by GameRenderer
@@ -139,11 +139,8 @@ public class Board{
 				} else if(overLappingRect) {
 					placeLetterInClosestValidBoardLocation(i, j, l);
 					break;
-				} else if (outsideWaffleTop(l)) {
-					placeLetterInTraySpace(l, false);
-					break;
-				} else if (outsideWaffleBottom(l)) {
-					placeLetterInTraySpace(l, true);
+				} else if (outsideWaffleBottom(l) || outsideWaffleTop(l)) {
+					placeLetterInTraySpace(l);
 					break;
 				}
 			}
@@ -179,7 +176,7 @@ public class Board{
 		} 
 		// put back in letter tray
 		else {
-			placeLetterInTraySpace(l, false);
+			placeLetterInTraySpace(l);
 		}
 		
 	}
@@ -193,13 +190,11 @@ public class Board{
 	}
 	
 	//This method places in tray space if it is empty
-	private void placeLetterInTraySpace(Letter l, boolean placeBack) {
+	private void placeLetterInTraySpace(Letter l) {
 		int loc;
 		
 		for (loc = 0; loc < NUM_LETTERS; loc++){
-			//Log.d(WordWaffle.DEBUG_TAG, "Tray Location: "+usedTrayLocations[loc]);
-			//Log.d(WordWaffle.DEBUG_TAG, "Overlaptester: "+OverlapTester.pointInRectangle(letterTray.get(loc), l.position));
-			if(placeBack){ //user drags object to space
+			if(outsideWaffleBottom(l)) { // user drags object to space
 				if(letterTray.get(loc).isUsed() && OverlapTester.pointInRectangle(letterTray.get(loc).getRect(), l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2)){
 					int tempLoc = letters.indexOf(l);
 					l.setLocation(letterTray.get(loc).getRect().lowerLeft.x, letterTray.get(loc).getRect().lowerLeft.y, -1, -1);
@@ -221,7 +216,7 @@ public class Board{
 					break;
 				}
 			}
-			else{ //user drags object off board
+			else{ // user drags object off board
 				if (letterTray.get(loc).isEmpty()){
 					l.setLocation(letterTray.get(loc).getRect().lowerLeft.x, letterTray.get(loc).getRect().lowerLeft.y, -1, -1);
 					l.state = Letter.IN_TRAY;
@@ -404,7 +399,6 @@ public class Board{
 			int[] newScores = new int[allScores.size()];
 			for(int a = 0; a < newScores.length; a++) newScores[a] = allScores.get(a);
 			MainMenu.saveHighScores(newScores);
-			//MainMenu.updateScores();
 		}
 		else return;
 	}

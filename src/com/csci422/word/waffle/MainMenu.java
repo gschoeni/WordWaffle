@@ -19,12 +19,24 @@ public class MainMenu extends Activity {
 
 	public static final String HIGH_SCORE_FILE = "High Score";
 	private static Context ctx;
+	private int[] viewIds = {R.id.highscoreFive , R.id.highscoreFour,
+			R.id.highscoreThree, R.id.highscoreTwo, R.id.highscoreOne};
+	private static TextView[] views;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ctx = getApplicationContext();
         setContentView(R.layout.activity_main_menu);
+        
+    	views = new TextView[viewIds.length];
+        for(int i = 0; i < viewIds.length; i++) views[i] = (TextView) findViewById(viewIds[i]);
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	updateScores();
     }
 
     @Override
@@ -32,6 +44,11 @@ public class MainMenu extends Activity {
         getMenuInflater().inflate(R.menu.activity_main_menu, menu);
         return true;
     }
+    
+	public void updateScores() {
+		int highscores[] = getHighScores();
+        for(int i = 0; i < highscores.length || i < viewIds.length; i++) views[i].setText(""+highscores[i]);
+	}
     
     public void startGame(View view) {        
     	Intent i = new Intent(this, WordWaffle.class);
@@ -46,7 +63,7 @@ public class MainMenu extends Activity {
 	        fos = ctx.openFileOutput(HIGH_SCORE_FILE, Context.MODE_PRIVATE);
 	
 	        ObjectOutputStream oos = new ObjectOutputStream(fos);
-	        oos.writeObject(scores); 
+	        oos.writeObject(scores);
 	        oos.close();
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
@@ -76,20 +93,7 @@ public class MainMenu extends Activity {
 	    return scores;
 	}
 
-	/*
-	 * Algorithm for changing text in TextViews, need to impliment elsewhere
-	 * 
-	private int[] viewIds = {R.id.highscoreFive , R.id.highscoreFour,
-			R.id.highscoreThree, R.id.highscoreTwo, R.id.highscoreOne};
-	private static TextView[] views;
-	views = new TextView[viewIds.length];
-        for(int i = 0; i < viewIds.length; i++) views[i] = (TextView) findViewById(viewIds[i]);
-	public static void updateScores() {
-		int[] scores = getHighScores();
-		for(int i = scores.length-1; i >= 0; i--){
-			TextView temp = views[i];
-			temp.setText(String.valueOf(scores[i]));
-		}
-	}*/
+	
+
     
 }
