@@ -105,6 +105,7 @@ public class GameRenderer {
 	
 	private void renderLetters() {
 		float letter_scale = 1.0f;
+		Letter beingDragged = null;
 		for(int i = 0; i < Board.letters.size(); i++) {
             Letter l = Board.letters.get(i);
             switch(l.state) {
@@ -115,8 +116,7 @@ public class GameRenderer {
             		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH, Letter.HEIGHT, Assets.invalid_letter);
             		break;
             	case Letter.IS_BEING_DRAGGED:
-            		letter_scale = 1.5f;
-            		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH * letter_scale, Letter.HEIGHT * letter_scale, Assets.letter);
+            		beingDragged = l;
             		break;
             	default:
             		batcher.drawSprite(l.position.x, l.position.y, Letter.WIDTH, Letter.HEIGHT, Assets.letter);
@@ -126,6 +126,13 @@ public class GameRenderer {
             Assets.letterRenderer.drawText(batcher, l.toString(), l.position.x, l.position.y, 25 * letter_scale, 25 * letter_scale, 0);
             letter_scale = 1.0f;
         }
+		// Make it so the letter that is being dragged is above all the other letters
+		if (beingDragged != null) {
+			letter_scale = 1.5f;
+    		batcher.drawSprite(beingDragged.position.x, beingDragged.position.y, Letter.WIDTH * letter_scale, Letter.HEIGHT * letter_scale, Assets.letter);
+    		Assets.letterRenderer.drawText(batcher, beingDragged.toString(), beingDragged.position.x, beingDragged.position.y, 25 * letter_scale, 25 * letter_scale, 0);
+            letter_scale = 1.0f;
+		}
 	}
 	
 	private void renderLetterTray() {
