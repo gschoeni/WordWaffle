@@ -48,7 +48,7 @@ public class ScoreCalculator {
 		4, // Y
 		10, // Z
 	};
-	
+		
 	// Suppress default constructor for noninstantiability
     private ScoreCalculator() {
         throw new AssertionError();
@@ -57,10 +57,19 @@ public class ScoreCalculator {
     public static int calculateBaseScore(Set<Word> valid_words, Set<Word> invalid_words) {
     	int score = 0;
     	int word_score = 0;
+    	int tripleWord = 1;
     	for (Word w : valid_words) {
+    		tripleWord = 1;
     		word_score = 0;
-    		for (int i = 0; i < w.word.length(); i++) word_score += pointsForLetters[(w.charAt(i) - 'A')];
-    		score += pointsForLengths[w.word.length()] + word_score;
+    		for (int i = 0; i < w.word.length(); i++){
+    			word_score += pointsForLetters[(w.charAt(i) - 'A')];
+    			for(int[] ints : w.board_locations){
+    				int x = ints[0];
+    				int y = ints[1];
+    				if( (x == 0 || x == 6) && (y == 0 || y == 6) ) tripleWord = 3;
+    			}
+    		}
+    		score += (pointsForLengths[w.word.length()] + word_score)*tripleWord;
     	}
     	return score;
     }
