@@ -9,6 +9,7 @@ public class Assets {
 	public static Texture background;
     public static TextureRegion backgroundRegion;
     public static TextureRegion gameOverScreen;
+    public static TextureRegion readyScreen;
     
     public static Texture foregroundItems;
     public static TextRenderer letterRenderer;
@@ -31,6 +32,7 @@ public class Assets {
     	background = new Texture(game, "waffle.png");
         backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
         gameOverScreen = new TextureRegion(background, 320, 0, 320, 480);
+        readyScreen = new TextureRegion(background, 640, 0, 320, 480);
         
         foregroundItems = new Texture(game, "game_sprites.png");
         letterRenderer = new TextRenderer(foregroundItems, 0, 40, 40, 40);

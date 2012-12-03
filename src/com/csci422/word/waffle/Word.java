@@ -54,8 +54,6 @@ public class Word implements Comparable{
 		return true;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return word;
@@ -69,6 +67,13 @@ public class Word implements Comparable{
 
 	public char charAt(int i) {
 		return word.charAt(i);
+	}
+	
+	public boolean areConnected(Word w) {
+		for (int[] location : board_locations) {
+			if (w.board_locations.contains(location)) return true;
+		}
+		return false;
 	}
 
 }

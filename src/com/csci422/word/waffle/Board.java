@@ -46,7 +46,7 @@ public class Board{
 	public int state;
 	
 	public Board() {
-		state = Board.GAME_RUNNING;
+		state = Board.GAME_READY;
 		initDataStructures();
 		initBoardSpaces();
 		initLetters();
@@ -63,6 +63,7 @@ public class Board{
 		letterTray = new ArrayList<TraySpace>();
 		slideLeftBounds = new Rectangle(0, 0, 50, 60);
 		slideRightBounds = new Rectangle(280, 0, 40, 60);
+		time = "2:00";
 	}
 	
 	private void initBoardSpaces() {
@@ -262,7 +263,6 @@ public class Board{
 	}
 	
 	public void checkForValidWords() {
-		Log.d(WordWaffle.DEBUG_TAG, "Check Valid Words");
 		String valid_vertical = "";
 		String valid_horizontal = "";
 		valid_words.clear();
@@ -319,20 +319,31 @@ public class Board{
 		}
 		
 		Log.d(WordWaffle.DEBUG_TAG, "Found Words: "+valid_words);
-		Log.d(WordWaffle.DEBUG_TAG, "Invaid Words: "+invalid_words);
-		setValidAndInvalidLetters();
+		Log.d(WordWaffle.DEBUG_TAG, "Invalid Words: "+invalid_words);
+		colorValidLetters();
 	}
 	
 	private void checkIfWordIsValid(String string_to_check, boolean isHorizontal) {
+		Log.d(WordWaffle.DEBUG_TAG, "Is connected to star?: "+isConnectedToStar(new Word(string_to_check, letter_chain, isHorizontal)));
+		
 		//checks if in dictionary and tile is on star space
 		if (Dictionary.isValidWord(string_to_check) && letterLocations[3][3] != ' '){
 			valid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
 		} else if(string_to_check.length() > 1 && letter_chain.size() > 0){
 			invalid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
 		}
+		
 	}
 	
-	private void setValidAndInvalidLetters() {
+	private boolean isConnectedToStar(Word word) {
+		for (Word w : valid_words) {
+			
+		}
+		
+		return false;
+	}
+	
+	private void colorValidLetters() {
 		// assume all letters are invalid
 		for (Letter letter : letters) {
 			if (letter.state == Letter.VALID_LOCATION)

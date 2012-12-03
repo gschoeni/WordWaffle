@@ -39,6 +39,9 @@ public class GameScreen extends GLScreen {
 	@Override
 	public void update(float deltaTime) {
 		switch (board.state) {
+			case Board.GAME_READY:
+				updateReady(deltaTime);
+				break;
 			case Board.GAME_RUNNING:
 				updateRunning(deltaTime);
 				break;
@@ -52,6 +55,16 @@ public class GameScreen extends GLScreen {
 
 				break;
 		}
+	}
+	
+	private void updateReady(float deltaTime) {
+		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+		for(int i = 0; i < touchEvents.size(); i++) {
+	        TouchEvent event = touchEvents.get(i);
+	        if(event.type != TouchEvent.TOUCH_DOWN) return;
+			board.state = Board.GAME_RUNNING;
+	    }
+		
 	}
 	
 	private void updateRunning(float deltaTime) {

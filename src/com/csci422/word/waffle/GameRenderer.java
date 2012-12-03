@@ -29,7 +29,7 @@ public class GameRenderer {
 	public void render() {
         cam.setViewportAndMatrices();
         renderBackground();
-        renderForeground();
+        if (board.state != Board.GAME_READY) renderForeground();
     }
 	
 	private void renderBackground() {
@@ -39,6 +39,17 @@ public class GameRenderer {
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		batcher.beginBatch(Assets.background);
 		switch (board.state) {
+			case Board.GAME_READY:
+				
+				batcher.drawSprite(cam.position.x, cam.position.y,
+	                    FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
+	                    Assets.backgroundRegion);
+				// Overlay the ready screen on the original background
+				batcher.drawSprite(cam.position.x, cam.position.y,
+                        FRUSTUM_WIDTH, FRUSTUM_HEIGHT, 
+                        Assets.readyScreen);
+			break;
+			
 			case Board.GAME_RUNNING:
 				
 				batcher.drawSprite(cam.position.x, cam.position.y,
@@ -75,6 +86,11 @@ public class GameRenderer {
         batcher.beginBatch(Assets.foregroundItems);
         
         switch (board.state) {
+        
+        	case Board.GAME_READY:
+
+        		break;
+        
 			case Board.GAME_RUNNING:
 				renderDebugSquares();
 		        renderScore();
