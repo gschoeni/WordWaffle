@@ -73,49 +73,22 @@ public class ScoreCalculator {
     	return score;
     }
 
-	public static int[] calculateScoreEnd(Set<Word> valid_words, Set<Word> invalid_words, int tilesRemaining) {
+	public static int[] calculateScoreEnd(Set<Word> valid_words, Set<Word> invalid_words, int tilesRemaining, float timeLeft) {
 		/* 
 		 * Score array will hold scores needed to display final score
 		 * 0 -> Final Score
-		 * 1 -> Long Word Bonus
-		 * 2 -> Finished Tray Bonus
-		 * 3 -> No Duplicate Words
-		 * 4 -> Unused Tiles
-		 * 5 -> Invalid Words
+		 * 1 -> Time Bonus
+		 * 2 -> Used all letters Bonus
+		 * 3 -> Invalid Letters
 		 */
-		int[] score = new int[6];
+		int[] score = new int[4];
 		score[0] = calculateBaseScore(valid_words, invalid_words);
 		score[1] = 0;
 		score[2] = 0;
 		score[3] = 0;
-		score[4] = 0;
-		score[5] = 0;
-    	
-    	Vector<Word> sortedWords = new Vector<Word>();
-    	sortedWords.addAll(valid_words);
-    	Collections.sort(sortedWords);
-    	
-    	boolean original = true;
-    	int shortWords = 0;
-    	for(int i = 0; i < sortedWords.size() - 1; i++){
-    		if(sortedWords.get(i).compareTo(sortedWords.get(i+1)) == 0){
-    			// Took this out for now.. don't really like having negative scores.
-    			// score[0] -= 5; // penalized for repeated words
-    			// score[3] -= 5;
-    			original = false;
-    		}
-    		if(sortedWords.get(i).word.length() <= 3) shortWords++;
-    	}
-    	if(sortedWords.size() > 0 && sortedWords.get(sortedWords.size() - 1).word.length() <= 3) shortWords++;
-    	
-    	if(shortWords == 0 || sortedWords.size() / shortWords > 2) {
-    		score[0] += 25; //bonus for 50% long words (>3)
-    		score[1] += 25;
-    	}
-    	if(original) {
-    		score[0] += 15; //+15 for no repeated words
-    		score[3] += 15;
-    	}
+		
+		score[0] += timeLeft;
+		score[1] += timeLeft;
     	
     	if(tilesRemaining == 0 && invalid_words.isEmpty()) {
     		score[0] += 50; // for finishing tray
@@ -124,12 +97,7 @@ public class ScoreCalculator {
     	else {
     		// Made penalty less severe for left over tiles, open for debate
     		score[0] -= (tilesRemaining); // penalized for leftoverTiles
-    		score[4] += -1 * (tilesRemaining);
-    	}
-    	
-    	for (Word w : invalid_words) {
-    		score[0] -= pointsForLengths[w.word.length()];
-    		score[5] -= pointsForLengths[w.word.length()];
+    		score[3] += -1 * (tilesRemaining);
     	}
     	
     	return score;

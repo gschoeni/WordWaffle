@@ -3,7 +3,9 @@ package com.csci422.word.waffle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import android.util.Log;
@@ -13,7 +15,7 @@ import com.badlogic.androidgames.framework.math.OverlapTester;
 import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
 
-public class Board{
+public class Board {
 	
 	public static final float WORLD_WIDTH = 320;
 	public static final float WORLD_HEIGHT = 480;
@@ -31,8 +33,7 @@ public class Board{
 	public static final int GAME_PAUSED = 2;
 	public static final int GAME_OVER = 3;
 	
-	private char[][] letterLocations;
-	public static Rectangle[][] validBoardSpaces;
+	private BoardSpace[][] boardSpaces;
 	public static List<Letter> letters;
 	public static Set<Word> valid_words;
 	public static Set<Word> invalid_words;
@@ -54,8 +55,7 @@ public class Board{
 	}
 	
 	private void initDataStructures() {
-		letterLocations = new char[BOARD_WIDTH][BOARD_HEIGHT];
-		validBoardSpaces = new Rectangle[BOARD_WIDTH][BOARD_HEIGHT];
+		boardSpaces = new BoardSpace[BOARD_WIDTH][BOARD_HEIGHT];
 		letters = new ArrayList<Letter>();
 		valid_words = new HashSet<Word>();
 		invalid_words = new HashSet<Word>();
@@ -72,8 +72,7 @@ public class Board{
 		int offset_y = 95;
 		for (int i = 0; i < BOARD_WIDTH; i++) {
 			for (int j = 0; j < BOARD_HEIGHT; j++) {
-				validBoardSpaces[i][j] = new Rectangle(offset_x + i*space_width, offset_y + j*space_width, space_width, space_width);
-				letterLocations[i][j] = ' ';
+				boardSpaces[i][j] = new BoardSpace(new Rectangle(offset_x + j*space_width, offset_y + i*space_width, space_width, space_width));
 			}
 		}
 	}
@@ -102,9 +101,8 @@ public class Board{
 			if (event.type == TouchEvent.TOUCH_DOWN && OverlapTester.pointInRectangle(l.bounds, touchPoint)) {
 	        	l.state = Letter.IS_BEING_DRAGGED;
 	        	// if this piece is in a valid board location it has now been picked up
-	        	// so set the value for that square back to ' '
 	        	if (l.col > -1 && l.row > -1) {
-	        		letterLocations[l.row][l.col] = ' ';
+	        		boardSpaces[l.row][l.col].letter = null;
 	        	} 
 	        	// we got it from the letterTray
 	        	else { 
@@ -127,12 +125,13 @@ public class Board{
 		boolean break_both = false;
 		for (int i = 0; i < BOARD_WIDTH; i++) {
 			for (int j = 0; j < BOARD_HEIGHT; j++) {
-				Rectangle r = validBoardSpaces[i][j];
+				Rectangle r = boardSpaces[i][j].rect;
 				// place the letter in the right location if we are over that square
 				boolean overLappingRect = OverlapTester.pointInRectangle(r, l.position.x + l.bounds.width/2, l.position.y + l.bounds.height/2);
-				if (letterLocations[i][j] == ' '  && overLappingRect) {
+				if (boardSpaces[i][j].isEmpty()  && overLappingRect) {
+					Log.d(WordWaffle.DEBUG_TAG, "Dropped: "+l);
 					l.setLocation(r.lowerLeft.x, r.lowerLeft.y, i, j);
-					letterLocations[i][j] = l.value;
+					boardSpaces[i][j].letter = l;
 					l.state = Letter.INVALID_LOCATION;
 					break_both = true;
 					break;
@@ -158,24 +157,24 @@ public class Board{
 		l.state = Letter.INVALID_LOCATION;
 		
 		// check top position
-		if (col < BOARD_HEIGHT - 1 && letterLocations[row][col+1] == ' ') {
-			l.setLocation(validBoardSpaces[row][col+1].lowerLeft.x, validBoardSpaces[row][col+1].lowerLeft.y, row, col+1);
+		if (col < BOARD_HEIGHT - 1 && boardSpaces[row][col+1].isEmpty()) {
+			l.setLocation(boardSpaces[row][col+1].rect.lowerLeft.x, boardSpaces[row][col+1].rect.lowerLeft.y, row, col+1);
 			// can't figure out why I don't need to set letterLocations[row][col+1] = l.value; here... but it works
 		} 
 		// check right
-		else if (row < BOARD_WIDTH - 1 && letterLocations[row+1][col] == ' ') {
-			l.setLocation(validBoardSpaces[row+1][col].lowerLeft.x, validBoardSpaces[row+1][col].lowerLeft.y, row+1, col);
+		else if (row < BOARD_WIDTH - 1 && boardSpaces[row+1][col].isEmpty()) {
+			l.setLocation(boardSpaces[row+1][col].rect.lowerLeft.x, boardSpaces[row+1][col].rect.lowerLeft.y, row+1, col);
 			// can't figure out why I don't need to set letterLocations[row+1][col] = l.value; here... but it works
 		}
 		// check bottom
-		else if (col > 0 && letterLocations[row][col-1] == ' ') {
-			l.setLocation(validBoardSpaces[row][col-1].lowerLeft.x, validBoardSpaces[row][col-1].lowerLeft.y, row, col-1);
-			letterLocations[row][col-1] = l.value;
+		else if (col > 0 && boardSpaces[row][col-1].isEmpty()) {
+			l.setLocation(boardSpaces[row][col-1].rect.lowerLeft.x, boardSpaces[row][col-1].rect.lowerLeft.y, row, col-1);
+			boardSpaces[row][col-1].letter = l;
 		}
 		// check left
-		else if (row > 0 && letterLocations[row-1][col] == ' ') {
-			l.setLocation(validBoardSpaces[row-1][col].lowerLeft.x, validBoardSpaces[row-1][col].lowerLeft.y, row-1, col);
-			letterLocations[row-1][col] = l.value;
+		else if (row > 0 && boardSpaces[row-1][col].isEmpty()) {
+			l.setLocation(boardSpaces[row-1][col].rect.lowerLeft.x, boardSpaces[row-1][col].rect.lowerLeft.y, row-1, col);
+			boardSpaces[row-1][col].letter = l;
 		} 
 		// put back in letter tray
 		else {
@@ -271,13 +270,13 @@ public class Board{
 		
 		// Check Horizontal
 		boolean horizontal = true;
-		for (int i = 0; i < BOARD_WIDTH; i++) {
+		for (int i = BOARD_WIDTH-1; i >= 0; i--) {
 			for (int j = 0; j < BOARD_HEIGHT; j++) {
-				if (letterLocations[j][i] != ' ') {
-					valid_horizontal += letterLocations[j][i];
-					int[] a = {j, i};
+				if (!boardSpaces[i][j].isEmpty()) {
+					valid_horizontal += boardSpaces[i][j].letter.toString();
+					int[] a = {i, j};
 					letter_chain.add(a);
-				} else if (letterLocations[j][i] == ' ' && valid_horizontal != "") {
+				} else if (boardSpaces[i][j].isEmpty() && valid_horizontal != "") {
 					// case where we have a valid word and the next spot is blank
 					checkIfWordIsValid(valid_horizontal, horizontal);
 					valid_horizontal = "";
@@ -298,11 +297,11 @@ public class Board{
 		horizontal = false;
 		for (int i = 0; i < BOARD_WIDTH; i++) {
 			for (int j = BOARD_HEIGHT - 1; j >= 0; j--) {
-				if (letterLocations[i][j] != ' ') {
-					valid_vertical += letterLocations[i][j];
-					int[] a = {i, j};
+				if (!boardSpaces[j][i].isEmpty()) {
+					valid_vertical += boardSpaces[j][i].letter.toString();
+					int[] a = {j, i};
 					letter_chain.add(a);
-				} else if (letterLocations[i][j] == ' ' && valid_vertical != "") {
+				} else if (boardSpaces[j][i].isEmpty() && valid_vertical != "") {
 					// case where we have a valid word and the next spot is blank
 					checkIfWordIsValid(valid_vertical, horizontal);
 					valid_vertical = "";
@@ -324,10 +323,14 @@ public class Board{
 	}
 	
 	private void checkIfWordIsValid(String string_to_check, boolean isHorizontal) {
-		Log.d(WordWaffle.DEBUG_TAG, "Is connected to star?: "+isConnectedToStar(new Word(string_to_check, letter_chain, isHorizontal)));
+		boolean allConnected = true;
+		for (int[] loc : letter_chain) {
+			// Log.d(WordWaffle.DEBUG_TAG, "Letter: "+boardSpaces[loc[0]][loc[1]].letter+" row: "+loc[0]+" col: "+loc[1]+" connected: "+isConnectedToStar(boardSpaces[loc[0]][loc[1]].letter));
+			if (!isConnectedToStar(boardSpaces[loc[0]][loc[1]].letter)) allConnected = false;
+		}
 		
 		//checks if in dictionary and tile is on star space
-		if (Dictionary.isValidWord(string_to_check) && letterLocations[3][3] != ' '){
+		if (Dictionary.isValidWord(string_to_check) && allConnected == true){
 			valid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
 		} else if(string_to_check.length() > 1 && letter_chain.size() > 0){
 			invalid_words.add(new Word(string_to_check, letter_chain, isHorizontal));
@@ -335,12 +338,54 @@ public class Board{
 		
 	}
 	
-	private boolean isConnectedToStar(Word word) {
-		for (Word w : valid_words) {
+	// Do a breadthe first search to see if the letters are attached to the star
+	private boolean isConnectedToStar(Letter l) {
+		Queue<Letter> searchQ = new LinkedList<Letter>();
+		Queue<Letter> exploredLetters = new LinkedList<Letter>();
+		
+		searchQ.add(l);
+		exploredLetters.add(l);
+		
+		while (searchQ.size() > 0) {
+			Letter t = searchQ.poll();
+			if (t.row == 3 && t.col == 3)
+				return true;
+			for (Letter e : getAdjacentLetters(t)) {
+				if (!exploredLetters.contains(e)) {
+					exploredLetters.add(e);
+					searchQ.add(e);
+				}
+			}
 			
 		}
 		
 		return false;
+	}
+	
+	private ArrayList<Letter> getAdjacentLetters(Letter l) {
+		ArrayList<Letter> adjacentLetters = new ArrayList<Letter>();
+		
+		// top letter
+		if (l.row < 6 && !boardSpaces[l.row+1][l.col].isEmpty()) {
+			adjacentLetters.add(boardSpaces[l.row+1][l.col].letter);
+		}
+		
+		// right letter
+		if (l.col < 6 && !boardSpaces[l.row][l.col+1].isEmpty()) {
+			adjacentLetters.add(boardSpaces[l.row][l.col+1].letter);
+		}
+		
+		// bottom letter
+		if (l.row > 0 && !boardSpaces[l.row-1][l.col].isEmpty()) {
+			adjacentLetters.add(boardSpaces[l.row-1][l.col].letter);
+		}
+		
+		// left letter
+		if (l.col > 0 && !boardSpaces[l.row][l.col-1].isEmpty()) {
+			adjacentLetters.add(boardSpaces[l.row][l.col-1].letter);
+		}
+		
+		return adjacentLetters;
 	}
 	
 	private void colorValidLetters() {
@@ -409,7 +454,7 @@ public class Board{
 			state = Board.GAME_OVER;
 			
 			
-			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft());
+			final_score = ScoreCalculator.calculateScoreEnd(valid_words, invalid_words, numTilesLeft(), timeLeft);
 			
 			//looks at final score and places top 5 high scores in memory
 			List<Integer> allScores = new ArrayList<Integer>();

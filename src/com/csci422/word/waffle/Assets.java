@@ -14,8 +14,8 @@ public class Assets {
     public static Texture foregroundItems;
     public static TextRenderer letterRenderer;
     public static TextRenderer blackNumberRenderer;
-    public static TextRenderer whiteNumberRenderer;
     public static TextureRegion debugRect;
+    public static TextureRegion waffleSquare;
     public static TextureRegion letter;
     public static TextureRegion valid_letter;
     public static TextureRegion invalid_letter;
@@ -29,17 +29,17 @@ public class Assets {
     }
     
     public static void load(GLGame game) {
-    	background = new Texture(game, "waffle.png");
-        backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
-        gameOverScreen = new TextureRegion(background, 320, 0, 320, 480);
-        readyScreen = new TextureRegion(background, 640, 0, 320, 480);
+    	background = new Texture(game, "WaffleBig.png");
+        backgroundRegion = new TextureRegion(background, 0, 0, 682, 1024);
+        gameOverScreen = new TextureRegion(background, 682, 0, 682, 1024);
+        readyScreen = new TextureRegion(background, 1364, 0, 682, 1024);
         
         foregroundItems = new Texture(game, "game_sprites.png");
         letterRenderer = new TextRenderer(foregroundItems, 0, 40, 40, 40);
         blackNumberRenderer = new TextRenderer(foregroundItems, 0, 280, 40, 40);
-        whiteNumberRenderer = new TextRenderer(foregroundItems, 0, 440, 40, 40);
          
         debugRect = new TextureRegion(foregroundItems, 40, 0, 40, 40);
+        waffleSquare = new TextureRegion(foregroundItems, 240, 0, 40, 40);
         letter = new TextureRegion(foregroundItems, 0, 0, 40, 40);
         valid_letter = new TextureRegion(foregroundItems, 160, 0, 40, 40);
         invalid_letter = new TextureRegion(foregroundItems, 200, 0, 40, 40);

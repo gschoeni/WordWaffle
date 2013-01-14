@@ -139,14 +139,14 @@ public class GameRenderer {
             		break;
             }
             
-            Assets.letterRenderer.drawText(batcher, l.toString(), l.position.x, l.position.y, 25 * letter_scale, 25 * letter_scale, 0);
+            Assets.letterRenderer.drawText(batcher, ""+l.value, l.position.x, l.position.y, 25 * letter_scale, 25 * letter_scale, 0);
             letter_scale = 1.0f;
         }
 		// Make it so the letter that is being dragged is above all the other letters
 		if (beingDragged != null) {
 			letter_scale = 1.5f;
     		batcher.drawSprite(beingDragged.position.x, beingDragged.position.y, Letter.WIDTH * letter_scale, Letter.HEIGHT * letter_scale, Assets.letter);
-    		Assets.letterRenderer.drawText(batcher, beingDragged.toString(), beingDragged.position.x, beingDragged.position.y, 25 * letter_scale, 25 * letter_scale, 0);
+    		Assets.letterRenderer.drawText(batcher, beingDragged.value+"", beingDragged.position.x, beingDragged.position.y, 25 * letter_scale, 25 * letter_scale, 0);
             letter_scale = 1.0f;
 		}
 	}
@@ -168,32 +168,27 @@ public class GameRenderer {
 	
 	
 	private void renderFinalScores() {
-		//draw total score
-		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.base_score, 110, 325, 30, 30, 20);
+		//draw base score
+		Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.base_score, 170, 327, 15, 15, 10);
 		
-		//Draw Long Word Bonus
-		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[1], 170, 270, 15, 15, 10);
+		//Draw Time Bonus
+		Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.final_score[1], 110, 240, 15, 15, 10);
 		
-		//Draw Finishing Tray Points
-		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[2], 180, 242, 15, 15, 10);
+		//Draw Used All Letters
+		Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.final_score[2], 215, 230, 15, 15, 10);
 		
-		//Repeated Words Score
-		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[3], 222, 215, 15, 15, 10);
-		
-		//Draw unused tile score
-		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[4], 175, 155, 15, 15, 10);
-		
-		//Draw invalid word score
-		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[5], 180, 125, 15, 15, 10);
+		//Invalid letters
+		Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.final_score[3], 150, 165, 15, 15, 10);
 		
 		//draw final score
-		Assets.whiteNumberRenderer.drawNumber(batcher, ""+Board.final_score[0], 140, 50, 40, 40, 25);
+		Assets.blackNumberRenderer.drawNumber(batcher, ""+Board.final_score[0], 180, 90, 30, 30, 20);
 		
 	}
 	
 	private void renderPausedScreen() {
 		batcher.drawSprite(160, 280, 220, 220, Assets.pauseScreen);
 	}
+	
 	
 	// Used to check any rectangles
 	private void renderDebugSquares() {

@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:orientation="vertical">
+    	android:orientation="vertical"
+    	android:background="@drawable/main_menu">
     	
 	    <Button
 	        android:id="@+id/buttonOne"
@@ -14,14 +15,7 @@
 	    	android:layout_height="wrap_content"
 	    	android:text="@string/play_button"
 	    	android:onClick="startGame"
-	    	android:layout_marginTop="5dp" />
-	    <Button
-	        android:id="@+id/buttonTwo"
-	    	android:layout_width="match_parent"
-	    	android:layout_height="wrap_content"
-	    	android:text="@string/rules_button"
-	    	android:onClick="showRules"
-	    	android:layout_marginTop="5dp" />
+	    	android:layout_marginTop="205dp" />
 	    <TextView
 	        android:id="@+id/highscoreLabel"
 	        android:layout_width="match_parent"
@@ -30,7 +24,7 @@
 	        android:textStyle="bold"
 	        android:textSize="15pt"
 	        android:gravity="center"
-	        android:layout_marginTop="100dp" />
+	        android:layout_marginTop="20dp" />
 	    <LinearLayout
 	        android:layout_width="match_parent"
 	    	android:layout_height="wrap_content"

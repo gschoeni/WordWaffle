@@ -47,7 +47,9 @@ public class MainMenu extends Activity {
     
 	public void updateScores() {
 		int highscores[] = getHighScores();
-        for(int i = 0; i < highscores.length || i < viewIds.length; i++) views[i].setText(""+highscores[i]);
+		if (highscores.length < 5)
+			highscores = new int[5];
+        //for(int i = 0; i < highscores.length || i < views.length; i++) views[i].setText(""+highscores[i]);
 	}
     
     public void startGame(View view) {        
