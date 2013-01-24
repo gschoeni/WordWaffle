@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.badlogic.androidgames.framework.impl.GLGraphics;
 import com.badlogic.androidgames.framework.math.Vector2;
-import com.csci422.word.waffle.GameRenderer;
+import com.curiousinspiration.wordwaffle.GameRenderer;
 
 public interface Input {
     public static class KeyEvent {

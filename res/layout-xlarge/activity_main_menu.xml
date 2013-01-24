@@ -1,0 +1,144 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_alignParentTop="true"
+	android:background="@drawable/main_menu"
+	android:orientation="vertical" >
+   	
+    <Button
+        android:id="@+id/playButton"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:text="@string/play_button"
+    	android:onClick="startGame"
+    	android:layout_marginTop="325dip"
+    	android:textSize="15pt"
+    	android:textStyle="bold"
+    	android:background="@android:color/transparent" />
+    <TextView
+        android:id="@+id/highscoreLabel"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:text ="@string/high_score_label"
+        android:textStyle="bold"
+        android:textSize="15pt"
+        android:gravity="center"
+        android:layout_marginTop="5dip" />
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="5dp"
+    	android:weightSum="2">
+    	<TextView
+	        android:id="@+id/labelOne"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/number_one"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    	<TextView
+	        android:id="@+id/highscoreOne"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/high_score_one"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="5dp"
+    	android:weightSum="2">
+    	<TextView
+	        android:id="@+id/labelTwo"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/number_two"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    	<TextView
+	        android:id="@+id/highscoreTwo"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/high_score_two"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="5dp"
+    	android:weightSum="2">
+    	<TextView
+	        android:id="@+id/labelThree"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/number_three"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    	<TextView
+	        android:id="@+id/highscoreThree"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/high_score_three"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="5dp"
+    	android:weightSum="2">
+    	<TextView
+	        android:id="@+id/labelFour"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/number_four"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    	<TextView
+	        android:id="@+id/highscoreFour"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/high_score_four"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="5dp"
+    	android:weightSum="2">
+    	<TextView
+	        android:id="@+id/labelFive"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/number_five"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    	<TextView
+	        android:id="@+id/highscoreFive"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:text ="@string/high_score_five"
+	        android:layout_weight="1"
+	        android:gravity="center" />
+    </LinearLayout>
+    <com.google.ads.AdView
+        xmlns:googleads="http://schemas.android.com/apk/lib/com.google.ads"
+        android:id="@+id/ad"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        googleads:adSize="BANNER"
+        googleads:adUnitId="a150fb29dbcff57" />
+   
+</LinearLayout>
